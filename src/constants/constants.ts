@@ -6,4 +6,4 @@ export const LIGHT_MODE = "light",
 export const DEFAULT_THEME: typeof AUTO_MODE = AUTO_MODE;
 
 // Page width: rem
-export const PAGE_WIDTH = 75;
+export const PAGE_WIDTH = 85;
