@@ -1,7 +1,5 @@
 <script lang="ts">
 import Giscus from "@giscus/svelte";
-import theme_dark from "@styles/giscus/dark.css?url";
-import theme_light from "@styles/giscus/light.css?url";
 import { getHue } from "@utils/setting-utils.ts";
 import { onDestroy, onMount } from "svelte";
 import { giscusConfig } from "@/config";
@@ -15,7 +13,7 @@ let iframe: HTMLIFrameElement | null = null;
 
 // iframe，不好搞啊，能设置html的style，定义var都好搞多了...只能这样屎上雕花了
 const build_theme = () => {
-	const url_raw = mode === "dark" ? theme_dark : theme_light;
+	const url_raw = mode === "dark" ? "/giscus/dark.css" : "/giscus/light.css";
 	const url = url_raw.startsWith("http")
 		? url_raw
 		: new URL(url_raw, window.location.origin).href;
