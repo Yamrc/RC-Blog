@@ -15,7 +15,7 @@ const { link, index } = Astro.props;
 	href={link.url}
 	target="_blank"
 	rel="noopener noreferrer"
-	class="group card-base p-4 md:p-5 rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98] onload-animation"
+	class="group card-base p-4 md:p-5 rounded-xl transition-all onload-animation"
 	style={`animation-delay: ${index * 50}ms`}
 >
 	<div class="flex items-start gap-4">
@@ -23,7 +23,7 @@ const { link, index } = Astro.props;
 			<ImageWrapper
 				src={link.avatar}
 				alt={link.name}
-				class="shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover border-2 border-black/5 dark:border-white/10 transition group-hover:border-primary"
+				class="shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-xl object-cover transition"
 			/>
 		)}
 		<div class="flex-1 min-w-0">
