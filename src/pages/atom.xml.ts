@@ -7,80 +7,50 @@ import sanitizeHtml from "sanitize-html";
 import { profileConfig, siteConfig } from "@/config";
 
 const parser = new MarkdownIt();
-
-function stripInvalidXmlChars(str: string): string {
-	return str.replace(
-		// biome-ignore lint/suspicious/noControlCharactersInRegex: https://www.w3.org/TR/xml/#charsets
-		/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\uFDD0-\uFDEF\uFFFE\uFFFF]/g,
-		"",
-	);
-}
-
-function formatDate(date: Date | string): string {
-	const d = date instanceof Date ? date : new Date(date);
-	return d.toISOString();
-}
-
-function toAbsoluteUrl(path: string, base: string): string {
-	if (path.startsWith("http://") || path.startsWith("https://")) {
-		return path;
-	}
-	const baseUrl = base.endsWith("/") ? base.slice(0, -1) : base;
-	const cleanPath = path.startsWith("/") ? path : `/${path}`;
-	return `${baseUrl}${cleanPath}`;
-}
+const xmlInvalidChars =
+	// biome-ignore lint/suspicious/noControlCharactersInRegex: https://www.w3.org/TR/xml/#charsets
+	/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\uFDD0-\uFDEF\uFFFE\uFFFF]/g;
 
 export async function GET(context: APIContext): Promise<Response> {
 	const blog = await getSortedPosts();
 	const siteUrl = context.site?.toString() ?? "https://yamr.cc";
-
-	const latestPost = blog[0];
-	const feedUpdated = latestPost
-		? formatDate(latestPost.data.updated ?? latestPost.data.published)
-		: new Date().toISOString();
-
-	const selfUrl = context.url.toString();
+	const baseUrl = siteUrl.endsWith("/") ? siteUrl.slice(0, -1) : siteUrl;
 
 	return getAtomResponse({
 		title: siteConfig.title,
 		id: siteUrl,
-		updated: feedUpdated,
+		updated: blog[0]
+			? new Date(blog[0].data.updated ?? blog[0].data.published).toISOString()
+			: new Date().toISOString(),
 		subtitle: siteConfig.subtitle || siteConfig.description || "",
 		lang: siteConfig.lang.replace("_", "-"),
 		link: [
 			{ href: siteUrl, rel: "alternate" },
-			{ href: selfUrl, rel: "self" },
+			{ href: context.url.toString(), rel: "self" },
 		],
-		author: [
-			{
-				name: profileConfig.name,
-			},
-		],
+		author: [{ name: profileConfig.name }],
 		entry: blog.map((post) => {
-			const content =
-				typeof post.body === "string" ? post.body : String(post.body || "");
-			const cleanedContent = stripInvalidXmlChars(content);
-			const postUrl = toAbsoluteUrl(url(`/posts/${post.slug}/`), siteUrl);
-			const postUpdated = formatDate(post.data.updated ?? post.data.published);
-			const postPublished = formatDate(post.data.published);
+			const content = String(post.body || "");
+			const cleaned = content.replace(xmlInvalidChars, "");
+			const postUrl = `${baseUrl}${url(`/posts/${post.slug}/`)}`;
 
 			return {
 				title: post.data.title,
 				id: postUrl,
-				updated: postUpdated,
-				published: postPublished,
+				updated: new Date(
+					post.data.updated ?? post.data.published,
+				).toISOString(),
+				published: new Date(post.data.published).toISOString(),
 				link: [{ href: postUrl, rel: "alternate" }],
 				summary: post.data.description || "",
 				content: {
 					type: "html",
-					value: sanitizeHtml(parser.render(cleanedContent), {
+					value: sanitizeHtml(parser.render(cleaned), {
 						allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
 					}),
 				},
-				...(post.data.tags && post.data.tags.length > 0
-					? {
-							category: post.data.tags.map((tag: string) => ({ term: tag })),
-						}
+				...(post.data.tags?.length
+					? { category: post.data.tags.map((tag: string) => ({ term: tag })) }
 					: {}),
 			};
 		}),
