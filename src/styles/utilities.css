@@ -23,7 +23,7 @@
 }
 
 @utility float-panel {
-	@apply top-[5.25rem] rounded-(--radius-large) overflow-hidden bg-(--float-panel-bg) transition shadow-xl
+	@apply top-[5.25rem] rounded-(--radius-large) overflow-hidden bg-(--float-panel-bg)! transition shadow-xl
 		dark:shadow-none;
 }
 
