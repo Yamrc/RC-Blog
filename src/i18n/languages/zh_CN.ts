@@ -52,7 +52,8 @@ export const zh_CN: Translation = {
 
 	[Key.feed]: "订阅源",
 	[Key.feedDescription]: "通过 RSS 或 Atom 订阅源获取最新文章更新",
-	[Key.feedSubtitle]: "使用 RSS 或 Atom 订阅源，您可以在不访问网站的情况下获取最新文章更新。",
+	[Key.feedSubtitle]:
+		"使用 RSS 或 Atom 订阅源，您可以在不访问网站的情况下获取最新文章更新。",
 	[Key.feedAtomLink]: "Atom 链接",
 	[Key.feedRssLink]: "RSS 链接",
 	[Key.feedCopyToReader]: "复制链接到您的阅读器",

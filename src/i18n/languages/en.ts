@@ -52,7 +52,8 @@ export const en: Translation = {
 
 	[Key.feed]: "Feed",
 	[Key.feedDescription]: "Get the latest posts via RSS or Atom feed",
-	[Key.feedSubtitle]: "Using RSS or Atom feeds, you can get the latest post updates without visiting the website.",
+	[Key.feedSubtitle]:
+		"Using RSS or Atom feeds, you can get the latest post updates without visiting the website.",
 	[Key.feedAtomLink]: "Atom Link",
 	[Key.feedRssLink]: "RSS Link",
 	[Key.feedCopyToReader]: "Copy link to your reader",
