@@ -50,6 +50,17 @@ export const zh_CN: Translation = {
 	[Key.expiredDisclaimer]:
 		"部分内容可能已经过时，如涉及版本、API 或工具使用，请以最新官方文档或仓库为准。",
 
+	[Key.feed]: "订阅源",
+	[Key.feedDescription]: "通过 RSS 或 Atom 订阅源获取最新文章更新",
+	[Key.feedSubtitle]: "使用 RSS 或 Atom 订阅源，您可以在不访问网站的情况下获取最新文章更新。",
+	[Key.feedAtomLink]: "Atom 链接",
+	[Key.feedRssLink]: "RSS 链接",
+	[Key.feedCopyToReader]: "复制链接到您的阅读器",
+	[Key.feedCopyLink]: "复制链接",
+	[Key.feedCopySuccess]: "已复制！",
+	[Key.feedCopyFailed]: "复制失败",
+	[Key.feedLatestPosts]: "最新文章",
+
 	[Key.notFound]: "404",
 	[Key.notFoundTitle]: "页面未找到",
 	[Key.notFoundDescription]: "抱歉，您访问的页面不存在或已被移除。",

@@ -50,6 +50,17 @@ export const en: Translation = {
 	[Key.expiredDisclaimer]:
 		"Some information may be outdated. Please refer to the latest official documentation or repository.",
 
+	[Key.feed]: "Feed",
+	[Key.feedDescription]: "Get the latest posts via RSS or Atom feed",
+	[Key.feedSubtitle]: "Using RSS or Atom feeds, you can get the latest post updates without visiting the website.",
+	[Key.feedAtomLink]: "Atom Link",
+	[Key.feedRssLink]: "RSS Link",
+	[Key.feedCopyToReader]: "Copy link to your reader",
+	[Key.feedCopyLink]: "Copy Link",
+	[Key.feedCopySuccess]: "Copied!",
+	[Key.feedCopyFailed]: "Copy failed",
+	[Key.feedLatestPosts]: "Latest Posts",
+
 	[Key.notFound]: "404",
 	[Key.notFoundTitle]: "Page Not Found",
 	[Key.notFoundDescription]:

@@ -45,6 +45,17 @@ enum I18nKey {
 	expiredSince = "expiredSince",
 	expiredDisclaimer = "expiredDisclaimer",
 
+	feed = "feed",
+	feedDescription = "feedDescription",
+	feedSubtitle = "feedSubtitle",
+	feedAtomLink = "feedAtomLink",
+	feedRssLink = "feedRssLink",
+	feedCopyToReader = "feedCopyToReader",
+	feedCopyLink = "feedCopyLink",
+	feedCopySuccess = "feedCopySuccess",
+	feedCopyFailed = "feedCopyFailed",
+	feedLatestPosts = "feedLatestPosts",
+
 	notFound = "notFound",
 	notFoundTitle = "notFoundTitle",
 	notFoundDescription = "notFoundDescription",
