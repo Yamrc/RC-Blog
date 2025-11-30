@@ -68,6 +68,9 @@ importers:
       astro-icon:
         specifier: ^1.1.5
         version: 1.1.5
+      astrojs-atom:
+        specifier: ^1.0.162
+        version: 1.0.162(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@2.79.2)(sass@1.80.4)(stylus@0.64.0)(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.1)
       hastscript:
         specifier: ^9.0.1
         version: 9.0.1
@@ -1994,6 +1997,9 @@ packages:
     resolution: {integrity: sha512-NFXqhB1UgBvleF5rLZ7a31Qzprf1lSch+k8o2XTvsw1d97gxGrjVVeWa8AnZUFtirz84YPW6+5NbLVNzS2y+uQ==}
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
+
+  astrojs-atom@1.0.162:
+    resolution: {integrity: sha512-nfpuN80MFTp+YHDIMUgtjWZAsvcs9FE5BZpaizaU+djJ6KC9UHBLi36prxsZTuW4JgK4maTFcRw/GeEKoIx4+g==}
 
   async-function@1.0.0:
     resolution: {integrity: sha512-hsU18Ae8CDTR6Kgu9DYf0EbCr/a5iGL0rytQDobUcdpYOKokk8LEjVphnXkDkgpi0wYVsqrXuP0bZxJaTqdgoA==}
@@ -7111,6 +7117,45 @@ snapshots:
       zod-to-ts: 1.2.0(typescript@5.9.3)(zod@3.25.76)
     optionalDependencies:
       sharp: 0.34.5
+    transitivePeerDependencies:
+      - '@azure/app-configuration'
+      - '@azure/cosmos'
+      - '@azure/data-tables'
+      - '@azure/identity'
+      - '@azure/keyvault-secrets'
+      - '@azure/storage-blob'
+      - '@capacitor/preferences'
+      - '@deno/kv'
+      - '@netlify/blobs'
+      - '@planetscale/database'
+      - '@types/node'
+      - '@upstash/redis'
+      - '@vercel/blob'
+      - '@vercel/functions'
+      - '@vercel/kv'
+      - aws4fetch
+      - db0
+      - idb-keyval
+      - ioredis
+      - jiti
+      - less
+      - lightningcss
+      - rollup
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tsx
+      - typescript
+      - uploadthing
+      - yaml
+
+  astrojs-atom@1.0.162(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@2.79.2)(sass@1.80.4)(stylus@0.64.0)(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.1):
+    dependencies:
+      astro: 5.16.2(@types/node@24.10.1)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@2.79.2)(sass@1.80.4)(stylus@0.64.0)(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.1)
+      fast-xml-parser: 5.3.2
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
