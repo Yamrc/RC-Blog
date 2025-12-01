@@ -18,11 +18,11 @@ const profileConf = profileConfig;
 const licenseConf = licenseConfig;
 const postUrl = decodeURIComponent(Astro.url.toString());
 ---
-<div class={`relative transition overflow-hidden bg-(--license-block-bg) py-5 px-6 ${className}`}>
-    <div class="transition font-bold text-black/75 dark:text-white/75">
+<div class={`relative transition overflow-hidden bg-(--license-block-bg) py-5 px-6 ${className}`} aria-label="License Information" role="contentinfo">
+    <div class="transition font-bold text-black/75 dark:text-white/75" aria-hidden="true">
         {title}
     </div>
-    <a href={postUrl} class="link text-(--primary)">
+    <a href={postUrl} class="link text-(--primary)" aria-hidden="true">
         {postUrl}
     </a>
     <div class="flex gap-6 mt-2">
