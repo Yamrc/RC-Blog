@@ -106,7 +106,7 @@ export const giscusConfig: GiscusConfig = {
 
 export const friendLinksConfig: FriendLinksConfig = {
 	enable: true,
-	submitMessage: "请提供提交PR加入友链。",
+	// page entry slug in "spec" collection
 };
 
 export const expressiveCodeConfig: ExpressiveCodeConfig = {

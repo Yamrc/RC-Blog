@@ -1,6 +1,7 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, getEntry, render } from "astro:content";
 import FriendLinkCard from "@components/FriendLinkCard.astro";
+import Markdown from "@components/misc/Markdown.astro";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
@@ -14,22 +15,30 @@ const friendLinks = await getCollection("friends");
 const links = friendLinks
 	.map((entry) => entry.data)
 	.sort((a, b) => a.name.localeCompare(b.name));
+const page = await getEntry("spec", "friends")?.catch(() => undefined);
+const Content = page ? await render(page) : null;
 
 const title = i18n(I18nKey.friendLinks);
 const description =
-	friendLinksConfig.submitMessage || i18n(I18nKey.friendLinksSubmitMessage);
+	page?.data?.description || i18n(I18nKey.friendLinksSubmitMessage);
 ---
 
 <MainGridLayout title={title} description={description}>
 	<div class="flex w-full rounded-(--radius-large) overflow-hidden relative">
 		<div class="card-base z-10 px-6 md:px-9 py-6 md:py-8 relative w-full">
-			<h1 class="text-3xl md:text-4xl font-bold text-black/90 dark:text-white/90 mb-4">
-				{title}
-			</h1>
-			{friendLinksConfig.submitMessage && (
-				<p class="text-black/60 dark:text-white/60 mb-6">
-					{friendLinksConfig.submitMessage}
-				</p>
+			{Content ? (
+				<Markdown class="">
+					<Content.Content />
+				</Markdown>
+			) : (
+				<>
+					<h1 class="text-3xl md:text-4xl font-bold text-black/90 dark:text-white/90 mb-4">
+						{title}
+					</h1>
+					<p class="text-black/60 dark:text-white/60 mb-6">
+						{description}
+					</p>
+				</>
 			)}
 			{links.length === 0 ? (
 				<div class="text-center py-12 text-black/40 dark:text-white/40">

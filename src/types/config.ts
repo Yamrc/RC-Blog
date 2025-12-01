@@ -107,7 +107,6 @@ export type FriendLink = {
 
 export type FriendLinksConfig = {
 	enable: boolean;
-	submitMessage?: string;
 };
 
 export type GiscusConfig = {
