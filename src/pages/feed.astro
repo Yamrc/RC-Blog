@@ -116,25 +116,15 @@ const rssUrl = `${Astro.site}rss.xml`;
 	</div>
 </MainGridLayout>
 
-<script define:vars={{ copySuccess: i18n(I18nKey.feedCopySuccess), copyFailed: i18n(I18nKey.feedCopyFailed), copyLink: i18n(I18nKey.feedCopyLink) }}>
+<script is:inline define:vars={{ copySuccess: i18n(I18nKey.feedCopySuccess), copyLink: i18n(I18nKey.feedCopyLink) }}>
 	document.querySelectorAll(".copy-feed-btn").forEach((btn) => {
 		btn.addEventListener("click", function () {
-			const url = this.getAttribute("data-url");
-			if (url) {
-				navigator.clipboard.writeText(url).then(() => {
-					const originalText = this.textContent || copyLink;
-					this.textContent = copySuccess;
-					setTimeout(() => {
-						this.textContent = originalText;
-					}, 2000);
-				}).catch(() => {
-					const originalText = this.textContent || copyLink;
-					this.textContent = copyFailed;
-					setTimeout(() => {
-						this.textContent = originalText;
-					}, 2000);
-				});
-			}
+			navigator.clipboard.writeText(this.getAttribute("data-url")).then(() => {
+				this.textContent = copySuccess;
+				setTimeout(() => {
+					this.textContent = copyLink;
+				}, 1000);
+			});
 		});
 	});
 </script>

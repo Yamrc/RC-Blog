@@ -59,7 +59,6 @@ export const zh_CN: Translation = {
 	[Key.feedCopyToReader]: "复制链接到您的阅读器",
 	[Key.feedCopyLink]: "复制链接",
 	[Key.feedCopySuccess]: "已复制！",
-	[Key.feedCopyFailed]: "复制失败",
 	[Key.feedLatestPosts]: "最新文章",
 
 	[Key.notFound]: "404",

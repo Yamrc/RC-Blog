@@ -59,7 +59,6 @@ export const en: Translation = {
 	[Key.feedCopyToReader]: "Copy link to your reader",
 	[Key.feedCopyLink]: "Copy Link",
 	[Key.feedCopySuccess]: "Copied!",
-	[Key.feedCopyFailed]: "Copy failed",
 	[Key.feedLatestPosts]: "Latest Posts",
 
 	[Key.notFound]: "404",

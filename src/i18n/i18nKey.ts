@@ -53,7 +53,6 @@ enum I18nKey {
 	feedCopyToReader = "feedCopyToReader",
 	feedCopyLink = "feedCopyLink",
 	feedCopySuccess = "feedCopySuccess",
-	feedCopyFailed = "feedCopyFailed",
 	feedLatestPosts = "feedLatestPosts",
 
 	notFound = "notFound",
