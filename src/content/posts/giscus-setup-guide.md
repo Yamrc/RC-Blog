@@ -1,7 +1,7 @@
 ---
 title: 别让博客成为单机游戏：Giscus完全に理解した
 published: 2025-11-16
-updated: 2025-11-24
+updated: 2025-12-01
 description: '详细教程：如何为静态博客配置 Giscus 评论系统，包括启用 GitHub Discussions、安装 Giscus App、获取配置代码及设置域名白名单防止滥用。'
 image: '../_assets/images/giscus-setup-guide/cover.webp'
 tags: [Giscus,评论,Github]
@@ -9,7 +9,6 @@ category: '教程'
 draft: false
 ---
 cover: `pixiv@シカ:135300143`
-# 什么是Giscus
 
 > 静态博客什么都好，就是少了点"人气"？让 Giscus 帮你打破沉默，与读者互动！
 
@@ -19,7 +18,7 @@ cover: `pixiv@シカ:135300143`
 :spoiler[有点门槛也可以防止一些众所周知的问题...比如滥用！]
 
 # 配置Giscus
-看起来不赖吗？那么，如何部署呢？
+感兴趣了吗？那就开始配置吧！
 
 ## 启用仓库Discussions
 首先，我们需要一个**公开的 GitHub 仓库**，用于存放评论数据。
@@ -47,7 +46,7 @@ cover: `pixiv@シカ:135300143`
 - **特性**：按需开启反应、元数据等
 - 其他：按需选择
 
-它会自动生成包含所填写配置的Script标签，你可以直接复制到你的网站中。
+它会自动生成包含所填写配置的Script标签，填写完成后就可以在比较靠近底部的地方看到给出的可用代码了，你可以直接复制到你的网站中。
 
 :::caution
 请不要复制本站的示例，因为其并非真实的配置信息。如果你用了，恭喜你，报错啦嘿嘿
@@ -71,16 +70,22 @@ cover: `pixiv@シカ:135300143`
 </script>
 ```
 
-## 防止其他站点使用你的Giscus
+## Giscus配置文件
 :::warning
 **默认情况下，任何网站都能使用你的 Giscus 配置！**<br/>
-想象一下：有人复刻了你的博客代码但忘记修改配置，结果所有访客的评论都提交到了**你的仓库**——孩子们，这并不好笑。
+想象一下：有人复刻了你的博客代码但忘记修改配置，结果所有访客的评论都提交到了**你的仓库**——孩子们，这并不好笑。<br/>
 :::
 如何解决这个问题呢？我们只需要在你在第一步配置的**discussions仓库**中创建如下文件:
 ```json title="giscus.json"
 {
-    "origins": ["你的域名，比如后面那个；你也别犯蠢照抄", "https://example.com"]
+    "origins": ["https://example.com"],
+    "originsRegex": ["http://localhost:[0-9]+"],
+    "defaultCommentOrder": "oldest"
 }
 ```
-这样，只有列出的域名才能加载评论，其他网站会收到 403 错误。
-虽然可以通过修改请求头绕过，但能有效防止意外滥用和初级恶意使用。
+它是一个Giscus的配置文件，需要放在仓库的根目录下。其中：
+- `origins`：允许访问的域名列表
+- `originsRegex`：允许访问的域名正则表达式列表
+- `defaultCommentOrder`：默认评论排序方式，支持 `oldest` 和 `newest`
+
+Giscus 的配置就是这么简单，本章完。遇到问题尽管在下方评论哦！
