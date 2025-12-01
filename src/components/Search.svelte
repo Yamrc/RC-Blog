@@ -3,6 +3,7 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import Icon from "@iconify/svelte";
 import { url } from "@utils/url-utils.ts";
+import { OverlayScrollbars } from "overlayscrollbars";
 import { onMount } from "svelte";
 import type { SearchResult } from "@/global";
 
@@ -86,6 +87,19 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 	}
 };
 
+const initPanelScrollbar = () => {
+	const panel = document.getElementById("search-panel-inner");
+	if (!panel) return;
+	OverlayScrollbars(panel, {
+		scrollbars: {
+			theme: "scrollbar-base scrollbar-auto",
+			autoHide: "move",
+			autoHideDelay: 500,
+			autoHideSuspend: false,
+		},
+	});
+};
+
 onMount(() => {
 	const initializeSearch = () => {
 		initialized = true;
@@ -123,6 +137,8 @@ onMount(() => {
 			}
 		}, 2000); // Adjust timeout as needed
 	}
+
+	initPanelScrollbar();
 });
 
 $: if (initialized && keywordDesktop) {
@@ -157,34 +173,49 @@ $: if (initialized && keywordMobile) {
 </button>
 
 <!-- search panel -->
-<div id="search-panel" class="float-panel float-panel-closed search-panel absolute md:w-[30rem]
-top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2">
-
-    <!-- search bar inside panel for phone/tablet -->
-    <div id="search-bar-inside" class="flex relative lg:hidden transition-all items-center h-11 rounded-xl
-      bg-black/4 hover:bg-black/6 focus-within:bg-black/6
-      dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10
-  ">
-        <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30" />
-        <input placeholder="Search" bind:value={keywordMobile}
-               class="pl-10 absolute inset-0 text-sm bg-transparent outline-0
+<div
+	id="search-panel"
+	class="float-panel float-panel-closed absolute md:w-[30rem] top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2"
+>
+	<div id="search-panel-inner" class="search-panel">
+		<!-- search bar inside panel for phone/tablet -->
+		<div
+			id="search-bar-inside"
+			class="flex relative lg:hidden transition-all items-center h-11 rounded-xl
+			bg-black/4 hover:bg-black/6 focus-within:bg-black/6
+			dark:bg-white/5 dark:hover:bg-white/10 dark:focus-within:bg-white/10"
+		>
+			<Icon
+				icon="material-symbols:search"
+				class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30"
+			/>
+			<input
+				placeholder="Search"
+				bind:value={keywordMobile}
+				class="pl-10 absolute inset-0 text-sm bg-transparent outline-0
                focus:w-60 text-black/50 dark:text-white/50"
-        >
-    </div>
+			/>
+		</div>
 
-    <!-- search results -->
-    {#each result as item}
-        <a href={item.url}
-           class="transition first-of-type:mt-2 lg:first-of-type:mt-0 group block
-       rounded-xl text-lg px-3 py-2 hover:bg-(--btn-plain-bg-hover) active:bg-(--btn-plain-bg-active)">
-            <div class="transition text-90 inline-flex font-bold group-hover:text-(--primary)">
-                {item.meta.title}<Icon icon="fa6-solid:chevron-right" class="transition text-[0.75rem] translate-x-1 my-auto text-(--primary)" />
-            </div>
-            <div class="transition text-sm text-50">
-                {@html item.excerpt}
-            </div>
-        </a>
-    {/each}
+		<!-- search results -->
+		{#each result as item}
+			<a
+				href={item.url}
+				class="transition first-of-type:mt-2 lg:first-of-type:mt-0 group block
+       			rounded-xl text-lg px-3 py-2 hover:bg-(--btn-plain-bg-hover) active:bg-(--btn-plain-bg-active)"
+			>
+				<div class="transition text-90 inline-flex font-bold group-hover:text-(--primary)">
+					{item.meta.title}<Icon
+						icon="fa6-solid:chevron-right"
+						class="transition text-[0.75rem] translate-x-1 my-auto text-(--primary)"
+					/>
+				</div>
+				<div class="transition text-sm text-50">
+					{@html item.excerpt}
+				</div>
+			</a>
+		{/each}
+	</div>
 </div>
 
 <style>
