@@ -55,6 +55,7 @@
     "remark-math": "^6.0.0",
     "remark-sectionize": "^2.1.0",
     "sanitize-html": "^2.17.0",
+    "satori": "^0.18.3",
     "sharp": "^0.34.5",
     "svelte": "^5.45.2",
     "tailwindcss": "^4.0.6",
