@@ -17,7 +17,7 @@ export const siteConfig: SiteConfig = {
 		"Yamrc的个人博客，专注于Typescript、Rust技术的业余实战经验分享。内容涵盖网络技术、serverless、云服务、站点优化及日常开发中和网上冲浪遇到的的问题排查与解决方案。",
 	lang: "zh_CN",
 	themeColor: {
-		hue: 345,
+		hue: 295,
 		fixed: true,
 	},
 	toc: {
