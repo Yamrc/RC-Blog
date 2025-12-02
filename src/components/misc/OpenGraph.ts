@@ -1,16 +1,33 @@
 // https://github.com/saicaca/fuwari/pull/600
 import type { CollectionEntry } from "astro:content";
 import fs from "node:fs";
+import sharp from "sharp";
 import { profileConfig, siteConfig } from "@/config";
 
-export default function OpenGraph(post: CollectionEntry<"posts">) {
-	const avatarBuffer = fs.readFileSync(`./src/${profileConfig.avatar}`);
+async function convertImageToPngBase64(buffer: Buffer): Promise<string | null> {
+	try {
+		if ((await sharp(buffer).metadata()).format === "png")
+			return buffer.toString("base64");
+		const cBuffer = await sharp(buffer)
+			.png({ quality: 100, compressionLevel: 9 })
+			.toBuffer();
+		return `data:image/png;base64,${cBuffer.toString("base64")}`;
+	} catch (error) {
+		console.warn("Failed to convert image to PNG:", error);
+		return `data:image/png;base64,${buffer.toString("base64")}`;
+	}
+}
+
+export default async function OpenGraph(post: CollectionEntry<"posts">) {
+	const avatarBase64 = await convertImageToPngBase64(
+		fs.readFileSync(`./src/${profileConfig.avatar}`),
+	);
 
 	let iconPath = "./public/favicon/favicon-dark-192.png";
 	if (siteConfig.favicon.length > 0) {
 		iconPath = `./public${siteConfig.favicon[0].src}`;
 	}
-	const iconBuffer = fs.readFileSync(iconPath);
+	const iconBase64 = await convertImageToPngBase64(fs.readFileSync(iconPath));
 
 	const hue = siteConfig.themeColor.hue;
 	const primaryColor = `hsl(${hue}, 90%, 65%)`;
@@ -50,17 +67,20 @@ export default function OpenGraph(post: CollectionEntry<"posts">) {
 							alignItems: "center",
 							gap: "20px",
 						},
-						children: [
-							{
-								type: "img",
-								props: {
-									src: `data:image/png;base64,${iconBuffer.toString("base64")}`,
-									width: 48,
-									height: 48,
-									style: { borderRadius: "10px" },
-								},
-							},
-							{
+						children: (() => {
+							const items = [];
+							if (iconBase64) {
+								items.push({
+									type: "img",
+									props: {
+										src: iconBase64,
+										width: 48,
+										height: 48,
+										style: { borderRadius: "10px" },
+									},
+								});
+							}
+							items.push({
 								type: "div",
 								props: {
 									style: {
@@ -70,8 +90,9 @@ export default function OpenGraph(post: CollectionEntry<"posts">) {
 									},
 									children: siteConfig.title,
 								},
-							},
-						],
+							});
+							return items;
+						})(),
 					},
 				},
 
@@ -85,68 +106,73 @@ export default function OpenGraph(post: CollectionEntry<"posts">) {
 							flexGrow: 1,
 							gap: "20px",
 						},
-						children: [
-							{
-								type: "div",
-								props: {
-									style: {
-										display: "flex",
-										alignItems: "flex-start",
-									},
-									children: [
-										{
-											type: "div",
-											props: {
-												style: {
-													width: "10px",
-													height: "68px",
-													backgroundColor: primaryColor,
-													borderRadius: "6px",
-													marginTop: "14px",
+						children: (() => {
+							const items = [
+								{
+									type: "div",
+									props: {
+										style: {
+											display: "flex",
+											alignItems: "flex-start",
+										},
+										children: [
+											{
+												type: "div",
+												props: {
+													style: {
+														width: "10px",
+														height: "68px",
+														backgroundColor: primaryColor,
+														borderRadius: "6px",
+														marginTop: "14px",
+													},
 												},
 											},
-										},
-										{
-											type: "div",
-											props: {
-												style: {
-													fontSize: "72px",
-													fontWeight: 700,
-													lineHeight: 1.2,
-													color: textColor,
-													marginLeft: "25px",
-													display: "-webkit-box",
-													overflow: "hidden",
-													textOverflow: "ellipsis",
-													lineClamp: 3,
-													WebkitLineClamp: 3,
-													WebkitBoxOrient: "vertical",
+											{
+												type: "div",
+												props: {
+													style: {
+														fontSize: "72px",
+														fontWeight: 700,
+														lineHeight: 1.2,
+														color: textColor,
+														marginLeft: "25px",
+														display: "-webkit-box",
+														overflow: "hidden",
+														textOverflow: "ellipsis",
+														lineClamp: 3,
+														WebkitLineClamp: 3,
+														WebkitBoxOrient: "vertical",
+													},
+													children: post.data.title,
 												},
-												children: post.data.title,
 											},
-										},
-									],
-								},
-							},
-							description && {
-								type: "div",
-								props: {
-									style: {
-										fontSize: "32px",
-										lineHeight: 1.5,
-										color: subtleTextColor,
-										paddingLeft: "35px",
-										display: "-webkit-box",
-										overflow: "hidden",
-										textOverflow: "ellipsis",
-										lineClamp: 2,
-										WebkitLineClamp: 2,
-										WebkitBoxOrient: "vertical",
+										],
 									},
-									children: description,
 								},
-							},
-						],
+							];
+							if (description) {
+								items.push({
+									type: "div",
+									props: {
+										style: {
+											fontSize: "32px",
+											lineHeight: 1.5,
+											color: subtleTextColor,
+											paddingLeft: "35px",
+											display: "-webkit-box",
+											overflow: "hidden",
+											textOverflow: "ellipsis",
+											lineClamp: 2,
+											WebkitLineClamp: 2,
+											WebkitBoxOrient: "vertical",
+										},
+										children: description,
+									},
+								});
+							}
+							return items;
+						})(),
 					},
 				},
 				{
@@ -167,17 +193,20 @@ export default function OpenGraph(post: CollectionEntry<"posts">) {
 										alignItems: "center",
 										gap: "20px",
 									},
-									children: [
-										{
-											type: "img",
-											props: {
-												src: `data:image/png;base64,${avatarBuffer.toString("base64")}`,
-												width: 60,
-												height: 60,
-												style: { borderRadius: "50%" },
-											},
-										},
-										{
+									children: (() => {
+										const items = [];
+										if (avatarBase64) {
+											items.push({
+												type: "img",
+												props: {
+													src: avatarBase64,
+													width: 60,
+													height: 60,
+													style: { borderRadius: "50%" },
+												},
+											});
+										}
+										items.push({
 											type: "div",
 											props: {
 												style: {
@@ -187,8 +216,9 @@ export default function OpenGraph(post: CollectionEntry<"posts">) {
 												},
 												children: profileConfig.name,
 											},
-										},
-									],
+										});
+										return items;
+									})(),
 								},
 							},
 							{

@@ -24,7 +24,7 @@ export async function GET({
 	const { post } = props;
 
 	const fonts = await getFonts();
-	const svg = await satori(OpenGraph(post), {
+	const svg = await satori(await OpenGraph(post), {
 		width: 1200,
 		height: 630,
 		fonts,
