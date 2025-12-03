@@ -6,8 +6,11 @@ import { profileConfig, siteConfig } from "@/config";
 
 async function convertImageToPngBase64(buffer: Buffer): Promise<string | null> {
 	try {
-		if ((await sharp(buffer).metadata()).format === "png")
-			return buffer.toString("base64");
+		const fmt = (await sharp(buffer).metadata()).format;
+		if (fmt === "png")
+			return `data:image/png;base64,${buffer.toString("base64")}`;
+		if (fmt === "svg")
+			return `data:image/svg+xml;base64,${buffer.toString("base64")}`;
 		const cBuffer = await sharp(buffer)
 			.png({ quality: 100, compressionLevel: 9 })
 			.toBuffer();
