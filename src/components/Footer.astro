@@ -21,7 +21,7 @@ const currentYear = new Date().getFullYear();
         Powered by
         <a class="transition link text-(--primary) font-medium" target="_blank" href="https://astro.build">Astro</a> &
         <a class="transition link text-(--primary) font-medium" target="_blank" href="https://github.com/saicaca/fuwari">Fuwari</a>
-        {siteConfig.record?.enable && <>{" / "}<a class="transition link text-(--primary) font-medium" target="_blank" href={siteConfig.record.url}>{siteConfig.record.text}</a></>}
+        {siteConfig.record?.enable && <>{" / "}<a class="transition link text-(--primary) font-medium whitespace-nowrap" target="_blank" href={siteConfig.record.url}>{siteConfig.record.text}</a></>}
     </div>
     {umamiConfig.enable && umamiConfig.shareId && (
         <div class="flex flex-wrap items-center justify-center gap-2 text-xs text-black/50 dark:text-white/50">
