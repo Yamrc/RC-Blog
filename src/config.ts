@@ -26,7 +26,16 @@ export const siteConfig: SiteConfig = {
 	},
 	favicon: [
 		{
-			src: "/favicon.ico",
+			src: "/favicon/favicon.svg",
+			sizes: "any",
+		},
+		{
+			src: "/favicon/favicon-192.png",
+			sizes: "192x192",
+		},
+		{
+			src: "/favicon/favicon-512.png",
+			sizes: "512x512",
 		},
 	],
 	record: {
