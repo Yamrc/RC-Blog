@@ -12,6 +12,7 @@ const postsCollection: ReturnType<typeof defineCollection> = defineCollection({
 		category: z.string().optional().nullable().default(""),
 		expiry: z.boolean().optional().default(true),
 		expiryDays: z.number().int().positive().optional(),
+		pinned: z.boolean().optional().default(false),
 		lang: z.string().optional().default(""),
 
 		/* For internal use */

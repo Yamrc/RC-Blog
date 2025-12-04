@@ -49,8 +49,9 @@ description: ''
 image: ''
 tags: []
 category: ''
-draft: false 
-lang: ''
+expiry: true
+pinned: false
+draft: false
 ---
 `
 

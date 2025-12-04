@@ -2,6 +2,7 @@
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getPostUrlBySlug } from "@utils/url-utils";
+import Icon from "@iconify/svelte";
 import { onMount } from "svelte";
 
 export let tags: string[];
@@ -20,6 +21,7 @@ interface Post {
 		tags: string[];
 		category?: string;
 		published: Date;
+		pinned?: boolean;
 	};
 }
 
@@ -111,6 +113,9 @@ onMount(async () => {
                     <div class="flex flex-row justify-start items-center h-full">
                         <!-- date -->
                         <div class="w-[15%] md:w-[10%] transition text-sm text-right text-50">
+                            {#if post.data.pinned}
+                                <Icon icon="material-symbols:push-pin" class="inline w-3 h-3 text-[var(--primary)] mr-1 align-middle" />
+                            {/if}
                             {formatDate(post.data.published)}
                         </div>
 
