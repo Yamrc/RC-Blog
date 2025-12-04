@@ -1,8 +1,8 @@
 <script lang="ts">
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
-import { getPostUrlBySlug } from "@utils/url-utils";
 import Icon from "@iconify/svelte";
+import { getPostUrlBySlug } from "@utils/url-utils";
 import { onMount } from "svelte";
 
 export let tags: string[];

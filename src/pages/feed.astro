@@ -9,7 +9,9 @@ import { Icon } from "astro-icon/components";
 
 const allPosts = (await getSortedPosts()).filter((post) => !post.data.draft);
 const recentPosts = [...allPosts]
-	.sort((a, b) => new Date(b.data.published) > new Date(a.data.published) ? 1 : -1)
+	.sort((a, b) =>
+		new Date(b.data.published) > new Date(a.data.published) ? 1 : -1,
+	)
 	.slice(0, 3);
 const atomUrl = `${Astro.site}atom.xml`;
 const rssUrl = `${Astro.site}rss.xml`;
