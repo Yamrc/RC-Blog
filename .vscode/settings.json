@@ -3,7 +3,7 @@
     "explorer.fileNesting.expand": true,
     "explorer.fileNesting.patterns": {
         "package.json": "pnpm-lock.yaml, svelte.config.js, tsconfig.json, pagefind.yml, frontmatter.json, biome.json, astro.config.mjs",
-        "README.md": "vercel.json, giscus.json, LICENSE, .gitignore"
+        "README.md": "wrangler.jsonc, giscus.json, LICENSE, .gitignore"
     },
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
