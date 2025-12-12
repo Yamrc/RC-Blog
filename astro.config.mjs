@@ -1,3 +1,4 @@
+import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import svelte from "@astrojs/svelte";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
@@ -99,6 +100,7 @@ export default defineConfig({
 		}),
 		svelte(),
 		sitemap(),
+		mdx({ optimize: true }),
 	],
 	markdown: {
 		remarkPlugins: [
