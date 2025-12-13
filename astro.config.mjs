@@ -164,9 +164,7 @@ export default defineConfig({
 					if (
 						warning.message.includes("is dynamically imported by") &&
 						warning.message.includes("but also statically imported by")
-					) {
-						return;
-					}
+					) return;
 					warn(warning);
 				},
 			},

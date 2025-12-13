@@ -55,9 +55,7 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 		return;
 	}
 
-	if (!initialized) {
-		return;
-	}
+	if (!initialized) return;
 
 	isSearching = true;
 

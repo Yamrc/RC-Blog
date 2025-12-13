@@ -9,9 +9,7 @@ export let className = "";
 export let placeholder = "—";
 export let metric: Metric = "pageviews";
 
-if (!umamiConfig.shareId) {
-	throw new Error("umamiConfig.shareId is required");
-}
+if (!umamiConfig.shareId) throw new Error("umamiConfig.shareId is required");
 
 const config = {
 	apiBase: umamiConfig.apiBase || "https://cloud.umami.is/analytics/us/api",
