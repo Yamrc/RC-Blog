@@ -15,6 +15,7 @@ export const siteConfig: SiteConfig = {
 	subtitle: "技术分享与开发笔记",
 	description:
 		"Yamrc的个人博客，专注于Typescript、Rust技术的业余实战经验分享。内容涵盖网络技术、serverless、云服务、站点优化及日常开发中和网上冲浪遇到的的问题排查与解决方案。",
+	createAt: "2023-08-14T19:30:32.000Z",
 	lang: "zh_CN",
 	themeColor: {
 		hue: 295,

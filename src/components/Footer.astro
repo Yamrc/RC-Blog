@@ -1,5 +1,6 @@
 ---
 
+import CreateDays from "@components/misc/CreateDays.astro";
 import ViewCounter from "@components/misc/ViewCounter.svelte";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
@@ -23,6 +24,7 @@ const currentYear = new Date().getFullYear();
         <a class="transition link text-(--primary) font-medium" target="_blank" href="https://github.com/saicaca/fuwari">Fuwari</a>
         {siteConfig.record?.enable && <>{" / "}<a class="transition link text-(--primary) font-medium whitespace-nowrap" target="_blank" href={siteConfig.record.url}>{siteConfig.record.text}</a></>}
     </div>
+    <CreateDays class="transition text-center text-50 text-sm" />
     {umamiConfig.enable && umamiConfig.shareId && (
         <div class="flex flex-wrap items-center justify-center gap-2 text-xs text-black/50 dark:text-white/50">
             <div class="flex items-center gap-1">

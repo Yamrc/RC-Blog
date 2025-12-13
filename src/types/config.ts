@@ -12,6 +12,7 @@ export type SiteConfig = {
 	title: string;
 	subtitle: string;
 	description?: string;
+	createAt?: string;
 
 	lang: "en" | "zh_CN";
 

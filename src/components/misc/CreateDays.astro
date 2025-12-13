@@ -1,0 +1,24 @@
+---
+import { siteConfig } from "@/config";
+
+interface Props {
+	class: string;
+}
+
+if (!siteConfig.createAt) return;
+const className = Astro.props.class;
+---
+
+<div id="create-timer" class=`${className}`></div>
+<script is:inline define:vars={{createDate: siteConfig.createAt}}>
+	(el => {
+		const update = () => {
+			const now = Date.now();
+			const sec = Math.floor((now - new Date(createDate)) / 1000);
+			// 这个补零在时间特别长的情况下会溢出，如果你的博客可以活几十年建议重构一下
+			el.textContent = `${sec/86400|0} days ${('0'+(sec%86400/3600|0)).slice(-2)} hours ${('0'+(sec%3600/60|0)).slice(-2)} minutes ${('0'+sec%60).slice(-2)} secs`;
+			setTimeout(update, 1000 - now%1000);
+		};
+		update();
+	})(document.getElementById('create-timer'));
+</script>
