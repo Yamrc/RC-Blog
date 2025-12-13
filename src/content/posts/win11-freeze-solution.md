@@ -3,7 +3,7 @@ title: 临时解决 Windows 11 24H2/25H2 下 Chromium 应用程序冻屏问题
 published: 2025-11-25
 updated: 2025-11-25
 description: 'Win11 24H2更新后Chrome、Edge、VSCode等Chromium应用频繁冻屏？屏幕出现画面残留、部分区域卡死？实测通过注册表禁用MPO或调整OverlayMinFPS参数可有效解决这一由微软Rust重写图形组件引发的兼容性问题。'
-image: '../_assets/images/win11-freeze-solution/cover.webp'
+image: '../_assets/images/win11-freeze-solution/cover_pixiv_123773799.webp'
 tags: [Windows11,Bug,Chromium,MPO]
 category: '杂谈'
 draft: false

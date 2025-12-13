@@ -2,7 +2,7 @@
 title: 临时解决 Arch Linux 原生运行 星露谷物语 时由 glibc 导致的 Galaxy API 初始化错误
 published: 2025-07-21
 description: '在 Arch Linux 更新 glibc 2.41 后遇到星露谷物语 Galaxy API 初始化错误？本文提供使用 patchelf 清除 execstack 的临时解决方案，修复多人联机问题。'
-image: '../_assets/images/err-smapi-galaxy-glibc-2-41/cover.webp'
+image: '../_assets/images/err-smapi-galaxy-glibc-2-41/cover_pixiv_133256102.webp'
 tags: [星露谷物语,Bug,Linux]
 category: '杂谈'
 expiryDays: 15
