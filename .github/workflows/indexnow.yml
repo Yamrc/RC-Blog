@@ -2,7 +2,7 @@ name: IndexNow Submit
 on:
   push:
     paths:
-      - 'src/content/posts/**'
+      - "src/content/posts/**"
 
 jobs:
   indexnow:
@@ -15,9 +15,10 @@ jobs:
       - name: Generate and submit URLs to IndexNow
         run: |
           URLS=$(git diff --name-only HEAD~1 HEAD -- 'src/content/posts/**' | \
-            sed 's|src/content/posts/||; s|\.md$||' | \
-            while read slug; do
-              [ -n "$slug" ] && echo "https://yamr.cc/posts/$slug/"
+            while read file; do
+              [ -f "$file" ] && ! awk '/^---$/{n++} n==1; n==2{exit}' "$file" | grep -q '^draft: true' && \
+                echo "$file" | sed 's|src/content/posts/||; s|\.md$||' | \
+                xargs -I{} echo "https://yamr.cc/posts/{}/"
             done | jq -R -s -c 'split("\n") | map(select(. != ""))')
 
           echo "Generated URLs: $URLS"
