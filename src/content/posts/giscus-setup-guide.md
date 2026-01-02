@@ -52,21 +52,21 @@ cover: `pixiv@シカ:135300143`
 请不要复制本站的示例，因为其并非真实的配置信息。如果你用了，恭喜你，报错啦嘿嘿
 :::
 生成结果示例：
-```js
+```js {2-5}
 <script src="https://giscus.app/client.js"
-        data-repo="user/repo"
-        data-repo-id="R_kgxxxx84Ig"
-        data-category="Announcements"
-        data-category-id="DIC_kwDxxxxsxxxxx"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="zh-CN"
-        crossorigin="anonymous"
-        async>
+  data-repo="user/repo"
+  data-repo-id="R_kgxxxx84Ig"
+  data-category="Announcements"
+  data-category-id="DIC_kwDxxxxsxxxxx"
+  data-mapping="pathname"
+  data-strict="0"
+  data-reactions-enabled="1"
+  data-emit-metadata="0"
+  data-input-position="bottom"
+  data-theme="preferred_color_scheme"
+  data-lang="zh-CN"
+  crossorigin="anonymous"
+  async>
 </script>
 ```
 

@@ -48,7 +48,7 @@ If there is code to deploy, you can either:
 2.  创建一个配置文件 `wrangler.jsonc`（或 `wrangler.toml`）
 
 显然，我们的目标是创建静态Worker，所以不能选第一个方案。挺好解决，补个配置`wrangler.toml`就行：
-```toml title="wrangler.toml"
+```toml {4-5} title="wrangler.toml"
 name = "worker名字"
 compatibility_date = "2025-12-11"
 
@@ -72,7 +72,7 @@ Wrangler采用差异上传策略，只会上传被更改的构建内容，可以
 Cloudflare worker 的默认404行为是只返回`404 HTTP CODE`，这意味着默认情况下自定义404页面无法生效。
 
 如果你需要自定义404页面，则需要让构建产物包含`404.html`，并添加字符串`404-page`到wrangler配置的`assets.not_found_handling`。看起来大概像这样：
-```toml title="wrangler.toml"
+```toml {3} title="wrangler.toml"
 [assets]
 directory = "./dist" # 这里填写你的构建产物目录
 not_found_handling = "404-page"
