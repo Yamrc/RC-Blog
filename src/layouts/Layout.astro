@@ -64,174 +64,279 @@ if (!lang) {
 const siteLang = lang.replace("_", "-");
 ---
 
-<!DOCTYPE html>
-<html lang={siteLang} class="bg-(--page-bg) transition text-[14px] md:text-[16px]"
-	data-overlayscrollbars-initialize
+<!doctype html>
+<html
+    lang={siteLang}
+    class="bg-(--page-bg) transition text-[14px] md:text-[16px]"
+    data-overlayscrollbars-initialize
 >
-	<head>
-		<title>{pageTitle}</title>
+    <head>
+        <title>{pageTitle}</title>
 
-		<meta charset="UTF-8" />
-		<meta name="description" content={description || siteConfig.description || pageTitle}>
-		<meta name="author" content={profileConfig.name}>
-		{robots && <meta name="robots" content={robots}>}
-		{!robots && <meta name="robots" content="index, follow">}
+        <meta charset="UTF-8" />
+        <meta
+            name="description"
+            content={description || siteConfig.description || pageTitle}
+        />
+        <meta name="author" content={profileConfig.name} />
+        {robots && <meta name="robots" content={robots} />}
+        {!robots && <meta name="robots" content="index, follow" />}
 
-		{canonical && <link rel="canonical" href={canonical}>}
-		{!canonical && <link rel="canonical" href={Astro.url.href}>}
+        {canonical && <link rel="canonical" href={canonical} />}
+        {!canonical && <link rel="canonical" href={Astro.url.href} />}
 
-		<meta property="og:site_name" content={siteConfig.title}>
-		<meta property="og:url" content={Astro.url.href}>
-		<meta property="og:title" content={pageTitle}>
-		<meta property="og:description" content={description || siteConfig.description || pageTitle}>
-		{image && image.trim() !== "" && <meta property="og:image" content={image.startsWith('http') ? image : new URL(image, Astro.site || Astro.url).href}>}
-		{setOGTypeArticle ? (
-        <>
-			<meta property="og:type" content="article" />
-			{published && <meta property="og:published_time" content={formatDateToYYYYMMDD(published)}>}
-			{updated && <meta property="og:modified_time" content={formatDateToYYYYMMDD(updated)}>}
-			<meta property="og:author" content={profileConfig.name}>
-		</>
-        ) : (
-        <meta property="og:type" content="website" />
-        )}
-		<meta property="og:locale" content={siteLang}>
+        <meta property="og:site_name" content={siteConfig.title} />
+        <meta property="og:url" content={Astro.url.href} />
+        <meta property="og:title" content={pageTitle} />
+        <meta
+            property="og:description"
+            content={description || siteConfig.description || pageTitle}
+        />
+        {
+            image && image.trim() !== "" && (
+                <meta
+                    property="og:image"
+                    content={
+                        image.startsWith("http")
+                            ? image
+                            : new URL(image, Astro.site || Astro.url).href
+                    }
+                />
+            )
+        }
+        {
+            setOGTypeArticle ? (
+                <>
+                    <meta property="og:type" content="article" />
+                    {published && (
+                        <meta
+                            property="og:published_time"
+                            content={formatDateToYYYYMMDD(published)}
+                        />
+                    )}
+                    {updated && (
+                        <meta
+                            property="og:modified_time"
+                            content={formatDateToYYYYMMDD(updated)}
+                        />
+                    )}
+                    <meta property="og:author" content={profileConfig.name} />
+                </>
+            ) : (
+                <meta property="og:type" content="website" />
+            )
+        }
+        <meta property="og:locale" content={siteLang} />
 
-		<meta name="twitter:card" content="summary_large_image">
-		<meta property="twitter:url" content={Astro.url.href}>
-		<meta name="twitter:title" content={pageTitle}>
-		<meta name="twitter:description" content={description || siteConfig.description || pageTitle}>
-		{image && image.trim() !== "" && <meta name="twitter:image" content={image.startsWith('http') ? image : new URL(image, Astro.site || Astro.url).href}>}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={Astro.url.href} />
+        <meta name="twitter:title" content={pageTitle} />
+        <meta
+            name="twitter:description"
+            content={description || siteConfig.description || pageTitle}
+        />
+        {
+            image && image.trim() !== "" && (
+                <meta
+                    name="twitter:image"
+                    content={
+                        image.startsWith("http")
+                            ? image
+                            : new URL(image, Astro.site || Astro.url).href
+                    }
+                />
+            )
+        }
 
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="generator" content={Astro.generator} />
-		{favicons.map(favicon => (
-			<link rel="icon"
-				  href={favicon.src.startsWith('/') ? url(favicon.src) : favicon.src}
-				  sizes={favicon.sizes}
-				  media={favicon.theme && `(prefers-color-scheme: ${favicon.theme})`}
-			/>
-		))}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="generator" content={Astro.generator} />
+        {
+            favicons.map((favicon) => (
+                <link
+                    rel="icon"
+                    href={
+                        favicon.src.startsWith("/")
+                            ? url(favicon.src)
+                            : favicon.src
+                    }
+                    sizes={favicon.sizes}
+                    media={
+                        favicon.theme &&
+                        `(prefers-color-scheme: ${favicon.theme})`
+                    }
+                />
+            ))
+        }
 
-		<!-- Set the theme before the page is rendered to avoid a flash -->
-		<script is:inline define:vars={{DEFAULT_THEME, LIGHT_MODE, DARK_MODE, AUTO_MODE, PAGE_WIDTH, configHue}}>
-			// Load the theme from local storage
-			const theme = localStorage.getItem('theme') || DEFAULT_THEME;
-			switch (theme) {
-				case LIGHT_MODE:
-					document.documentElement.classList.remove('dark');
-					break
-				case DARK_MODE:
-					document.documentElement.classList.add('dark');
-					break
-				case AUTO_MODE:
-					if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-						document.documentElement.classList.add('dark');
-					} else {
-						document.documentElement.classList.remove('dark');
-					}
-			}
+        <!-- Set the theme before the page is rendered to avoid a flash -->
+        <script
+            is:inline
+            define:vars={{
+                DEFAULT_THEME,
+                LIGHT_MODE,
+                DARK_MODE,
+                AUTO_MODE,
+                PAGE_WIDTH,
+                configHue,
+            }}
+        >
+            // Load the theme from local storage
+            const theme = localStorage.getItem("theme") || DEFAULT_THEME;
+            switch (theme) {
+                case LIGHT_MODE:
+                    document.documentElement.classList.remove("dark");
+                    break;
+                case DARK_MODE:
+                    document.documentElement.classList.add("dark");
+                    break;
+                case AUTO_MODE:
+                    if (
+                        window.matchMedia("(prefers-color-scheme: dark)")
+                            .matches
+                    ) {
+                        document.documentElement.classList.add("dark");
+                    } else {
+                        document.documentElement.classList.remove("dark");
+                    }
+            }
 
-			// Load the hue from local storage
-			const hue = localStorage.getItem('hue') || configHue;
-			document.documentElement.style.setProperty('--hue', hue);
-		</script>
-		<style define:vars={{
-			configHue,
-			'page-width': `${PAGE_WIDTH}rem`,
-		}}></style>  <!-- defines global css variables. This will be applied to <html> <body> and some other elements idk why -->
-		{umamiConfig.enable && import.meta.env.PROD && <script src={umamiConfig.scriptUrl || "https://cloud.umami.is/script.js"} data-website-id={umamiConfig.websiteId} data-swup-ignore-script defer/>}
+            // Load the hue from local storage
+            const hue = localStorage.getItem("hue") || configHue;
+            document.documentElement.style.setProperty("--hue", hue);
+        </script>
+        <style
+            define:vars={{
+                configHue,
+                "page-width": `${PAGE_WIDTH}rem`,
+            }}
+        ></style>
+        <!-- defines global css variables. This will be applied to <html> <body> and some other elements idk why -->
+        {
+            umamiConfig.enable && import.meta.env.PROD && (
+                <script
+                    src={
+                        umamiConfig.scriptUrl ||
+                        "https://cloud.umami.is/script.js"
+                    }
+                    data-website-id={umamiConfig.websiteId}
+                    data-swup-ignore-script
+                    fetchpriority="low"
+                    defer
+                />
+            )
+        }
 
-		<slot name="head"></slot>
+        <slot name="head" />
 
-		<link rel="alternate" type="application/rss+xml" title={profileConfig.name} href={`${Astro.site}rss.xml`}/>
-		
-		{/* JSON-LD Structured Data */}
-		<script type="application/ld+json" set:html={(() => {
-			const imageUrl = image && image.trim() !== "" ? (image.startsWith('http') ? image : new URL(image, Astro.site || Astro.url).href) : undefined;
-			const jsonLd: Record<string, any> = {
-				"@context": "https://schema.org",
-				"@type": setOGTypeArticle ? "BlogPosting" : "WebSite",
-				"name": setOGTypeArticle ? title : siteConfig.title,
-				"description": description || siteConfig.description || siteConfig.subtitle,
-				"url": Astro.url.href,
-				"author": {
-					"@type": "Person",
-					"name": profileConfig.name,
-					"url": Astro.site
-				},
-				"publisher": {
-					"@type": "Person",
-					"name": profileConfig.name
-				},
-				"inLanguage": siteLang,
-			};
-			
-			if (setOGTypeArticle) {
-				if (title) jsonLd.headline = title;
-				jsonLd.mainEntityOfPage = {
-					"@type": "WebPage",
-					"@id": Astro.url.href
-				};
-				if (published) jsonLd.datePublished = formatDateToYYYYMMDD(published);
-				if (updated) jsonLd.dateModified = formatDateToYYYYMMDD(updated);
-				if (category) jsonLd.articleSection = category;
-			} else {
-				jsonLd.potentialAction = {
-					"@type": "SearchAction",
-					"target": {
-						"@type": "EntryPoint",
-						"urlTemplate": `${Astro.site}archive/?q={search_term_string}`
-					},
-					"query-input": "required name=search_term_string"
-				};
-			}
+        <link
+            rel="alternate"
+            type="application/rss+xml"
+            title={profileConfig.name}
+            href={`${Astro.site}rss.xml`}
+        />
 
-			if (imageUrl) jsonLd.image = imageUrl;
-			
-			return JSON.stringify(jsonLd);
-		})()}></script>
-		<link rel="sitemap" href="/sitemap-index.xml" />
-	</head>
-	<body class=" min-h-screen transition "
-		  data-overlayscrollbars-initialize
-	>
-		<ConfigCarrier></ConfigCarrier>
-		<slot />
+        {/* JSON-LD Structured Data */}
+        <script
+            type="application/ld+json"
+            set:html={(() => {
+                const imageUrl =
+                    image && image.trim() !== ""
+                        ? image.startsWith("http")
+                            ? image
+                            : new URL(image, Astro.site || Astro.url).href
+                        : undefined;
+                const jsonLd: Record<string, any> = {
+                    "@context": "https://schema.org",
+                    "@type": setOGTypeArticle ? "BlogPosting" : "WebSite",
+                    name: setOGTypeArticle ? title : siteConfig.title,
+                    description:
+                        description ||
+                        siteConfig.description ||
+                        siteConfig.subtitle,
+                    url: Astro.url.href,
+                    author: {
+                        "@type": "Person",
+                        name: profileConfig.name,
+                        url: Astro.site,
+                    },
+                    publisher: {
+                        "@type": "Person",
+                        name: profileConfig.name,
+                    },
+                    inLanguage: siteLang,
+                };
 
-		<!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
-		<div id="page-height-extend" class="hidden h-[300vh]"></div>
-	</body>
+                if (setOGTypeArticle) {
+                    if (title) jsonLd.headline = title;
+                    jsonLd.mainEntityOfPage = {
+                        "@type": "WebPage",
+                        "@id": Astro.url.href,
+                    };
+                    if (published)
+                        jsonLd.datePublished = formatDateToYYYYMMDD(published);
+                    if (updated)
+                        jsonLd.dateModified = formatDateToYYYYMMDD(updated);
+                    if (category) jsonLd.articleSection = category;
+                } else {
+                    jsonLd.potentialAction = {
+                        "@type": "SearchAction",
+                        target: {
+                            "@type": "EntryPoint",
+                            urlTemplate: `${Astro.site}archive/?q={search_term_string}`,
+                        },
+                        "query-input": "required name=search_term_string",
+                    };
+                }
+
+                if (imageUrl) jsonLd.image = imageUrl;
+
+                return JSON.stringify(jsonLd);
+            })()}
+        />
+        <link rel="sitemap" href="/sitemap-index.xml" />
+    </head>
+    <body class="min-h-screen transition" data-overlayscrollbars-initialize>
+        <ConfigCarrier />
+        <slot />
+
+        <!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
+        <div id="page-height-extend" class="hidden h-[300vh]"></div>
+    </body>
 </html>
 
 <script>
-import 'overlayscrollbars/overlayscrollbars.css';
-import {
-	OverlayScrollbars,
-	// ScrollbarsHidingPlugin,
-	// SizeObserverPlugin,
-	// ClickScrollPlugin
-} from 'overlayscrollbars';
-import {getHue, getStoredTheme, setHue, setTheme} from "../utils/setting-utils";
-import {url} from "../utils/url-utils";
+    import "overlayscrollbars/overlayscrollbars.css";
+    import {
+        OverlayScrollbars,
+        // ScrollbarsHidingPlugin,
+        // SizeObserverPlugin,
+        // ClickScrollPlugin
+    } from "overlayscrollbars";
+    import {
+        getHue,
+        getStoredTheme,
+        setHue,
+        setTheme,
+    } from "../utils/setting-utils";
 
-/* Preload fonts */
-// (async function() {
-// 	try {
-// 		await Promise.all([
-// 			document.fonts.load("400 1em Roboto"),
-// 			document.fonts.load("700 1em Roboto"),
-// 		]);
-// 		document.body.classList.remove("hidden");
-// 	} catch (error) {
-// 		console.log("Failed to load fonts:", error);
-// 	}
-// })();
+    /* Preload fonts */
+    // import { url } from "../utils/url-utils";
+    // (async function() {
+    // 	try {
+    // 		await Promise.all([
+    // 			document.fonts.load("400 1em Roboto"),
+    // 			document.fonts.load("700 1em Roboto"),
+    // 		]);
+    // 		document.body.classList.remove("hidden");
+    // 	} catch (error) {
+    // 		console.log("Failed to load fonts:", error);
+    // 	}
+    // })();
 
-/* TODO This is a temporary solution for style flicker issue when the transition is activated */
-/* issue link: https://github.com/withastro/astro/issues/8711, the solution get from here too */
-/* update: fixed in Astro 3.2.4 */
-/*
+    /* TODO This is a temporary solution for style flicker issue when the transition is activated */
+    /* issue link: https://github.com/withastro/astro/issues/8711, the solution get from here too */
+    /* update: fixed in Astro 3.2.4 */
+    /*
 function disableAnimation() {
 	const css = document.createElement('style')
 	css.appendChild(
@@ -259,226 +364,254 @@ function disableAnimation() {
 }
 */
 
-
-function setClickOutsideToClose(panel: string, ignores: string[]) {
-	document.addEventListener("click", event => {
-		let panelDom = document.getElementById(panel);
-		let tDom = event.target;
-		if (!(tDom instanceof Node)) return;		// Ensure the event target is an HTML Node
-		for (let ig of ignores) {
-			let ie = document.getElementById(ig)
-			if (ie == tDom || (ie?.contains(tDom))) return;
-		}
-		panelDom!.classList.add("float-panel-closed");
-	});
-}
-setClickOutsideToClose("display-setting", ["display-setting", "display-settings-switch"])
-setClickOutsideToClose("nav-menu-panel", ["nav-menu-panel", "nav-menu-switch"])
-setClickOutsideToClose("search-panel", ["search-panel", "search-bar", "search-switch"])
-
-
-function loadTheme() {
-	const theme = getStoredTheme()
-	setTheme(theme)
-}
-
-function loadHue() {
-	setHue(getHue())
-}
-
-function initCustomScrollbar() {
-	const bodyElement = document.querySelector('body');
-	if (!bodyElement) return;
-	OverlayScrollbars(
-		// docs say that a initialization to the body element would affect native functionality like window.scrollTo
-		// but just leave it here for now
-		{
-			target: bodyElement,
-			cancel: {
-				nativeScrollbarsOverlaid: true,    // don't initialize the overlay scrollbar if there is a native one
-			}
-		}, {
-		scrollbars: {
-			theme: 'scrollbar-base scrollbar-auto py-1',
-			autoHide: 'move',
-			autoHideDelay: 500,
-			autoHideSuspend: false,
-		},
-	});
-
-	const katexElements = document.querySelectorAll('.katex-display') as NodeListOf<HTMLElement>;
-
-	const katexObserverOptions = {
-		root: null,
-		rootMargin: '100px',
-		threshold: 0.1
-	};
-
-	const processKatexElement = (element: HTMLElement) => {
-		if (!element.parentNode) return;
-		if (element.hasAttribute('data-scrollbar-initialized')) return;
-
-		const container = document.createElement('div');
-		container.className = 'katex-display-container';
-		container.setAttribute('aria-label', 'scrollable container for formulas');
-
-		element.parentNode.insertBefore(container, element);
-		container.appendChild(element);
-
-		OverlayScrollbars(container, {
-			scrollbars: {
-				theme: 'scrollbar-base scrollbar-auto',
-				autoHide: 'leave',
-				autoHideDelay: 500,
-				autoHideSuspend: false
-			}
-		});
-
-		element.setAttribute('data-scrollbar-initialized', 'true');
-	};
-
-	const katexObserver = new IntersectionObserver((entries, observer) => {
-		entries.forEach(entry => {
-			if (entry.isIntersecting) {
-			processKatexElement(entry.target as HTMLElement);
-			observer.unobserve(entry.target);
-			}
-		});
-	}, katexObserverOptions);
-
-	katexElements.forEach(element => {
-		katexObserver.observe(element);
-	});
-}
-
-function init() {
-	// disableAnimation()()		// TODO
-	loadTheme();
-	loadHue();
-	initCustomScrollbar();
-}
-
-/* Load settings when entering the site */
-init();
-
-const setup = () => {
-	window.swup.hooks.on('link:click', () => {
-		// Remove the delay for the first time page load
-		document.documentElement.style.setProperty('--content-delay', '0ms')
-	})
-	window.swup.hooks.on('content:replace', initCustomScrollbar)
-	window.swup.hooks.on('visit:start', (visit: {to: {url: string}}) => {
-		// increase the page height during page transition to prevent the scrolling animation from jumping
-		const heightExtend = document.getElementById('page-height-extend')
-		if (heightExtend) {
-			heightExtend.classList.remove('hidden')
-		}
-
-		// Hide the TOC while scrolling back to top
-		let toc = document.getElementById('toc-wrapper');
-		if (toc) {
-			toc.classList.add('toc-not-ready')
-		}
-	});
-	window.swup.hooks.on('page:view', () => {
-		// hide the temp high element when the transition is done
-		const heightExtend = document.getElementById('page-height-extend')
-		if (heightExtend) {
-			heightExtend.classList.remove('hidden')
-		}
-	});
-	window.swup.hooks.on('visit:end', (_visit: {to: {url: string}}) => {
-		setTimeout(() => {
-			const heightExtend = document.getElementById('page-height-extend')
-			if (heightExtend) {
-				heightExtend.classList.add('hidden')
-			}
-
-            // Just make the transition looks better
-            const toc = document.getElementById('toc-wrapper');
-            if (toc) {
-                toc.classList.remove('toc-not-ready')
+    function setClickOutsideToClose(panel: string, ignores: string[]) {
+        document.addEventListener("click", (event) => {
+            let panelDom = document.getElementById(panel);
+            let tDom = event.target;
+            if (!(tDom instanceof Node)) return; // Ensure the event target is an HTML Node
+            for (let ig of ignores) {
+                let ie = document.getElementById(ig);
+                if (ie == tDom || ie?.contains(tDom)) return;
             }
-        }, 200)
-	});
-}
-if (window?.swup?.hooks) {
-	setup()
-} else {
-	document.addEventListener('swup:enable', setup)
-}
+            panelDom!.classList.add("float-panel-closed");
+        });
+    }
+    setClickOutsideToClose("display-setting", [
+        "display-setting",
+        "display-settings-switch",
+    ]);
+    setClickOutsideToClose("nav-menu-panel", [
+        "nav-menu-panel",
+        "nav-menu-switch",
+    ]);
+    setClickOutsideToClose("search-panel", [
+        "search-panel",
+        "search-bar",
+        "search-switch",
+    ]);
 
-let backToTopBtn = document.getElementById('back-to-top-btn');
-function scrollFunction() {
-	if (backToTopBtn) {
-		const threshold = 400; // Show back to top button after scrolling 400px
-		if (document.body.scrollTop > threshold || document.documentElement.scrollTop > threshold) {
-			backToTopBtn.classList.remove('hide')
-		} else {
-			backToTopBtn.classList.add('hide')
-		}
-	}
-}
-window.onscroll = scrollFunction
+    function loadTheme() {
+        const theme = getStoredTheme();
+        setTheme(theme);
+    }
 
+    function loadHue() {
+        setHue(getHue());
+    }
+
+    function initCustomScrollbar() {
+        const bodyElement = document.querySelector("body");
+        if (!bodyElement) return;
+        OverlayScrollbars(
+            // docs say that a initialization to the body element would affect native functionality like window.scrollTo
+            // but just leave it here for now
+            {
+                target: bodyElement,
+                cancel: {
+                    nativeScrollbarsOverlaid: true, // don't initialize the overlay scrollbar if there is a native one
+                },
+            },
+            {
+                scrollbars: {
+                    theme: "scrollbar-base scrollbar-auto py-1",
+                    autoHide: "move",
+                    autoHideDelay: 500,
+                    autoHideSuspend: false,
+                },
+            },
+        );
+
+        const katexElements = document.querySelectorAll(
+            ".katex-display",
+        ) as NodeListOf<HTMLElement>;
+
+        const katexObserverOptions = {
+            root: null,
+            rootMargin: "100px",
+            threshold: 0.1,
+        };
+
+        const processKatexElement = (element: HTMLElement) => {
+            if (!element.parentNode) return;
+            if (element.hasAttribute("data-scrollbar-initialized")) return;
+
+            const container = document.createElement("div");
+            container.className = "katex-display-container";
+            container.setAttribute(
+                "aria-label",
+                "scrollable container for formulas",
+            );
+
+            element.parentNode.insertBefore(container, element);
+            container.appendChild(element);
+
+            OverlayScrollbars(container, {
+                scrollbars: {
+                    theme: "scrollbar-base scrollbar-auto",
+                    autoHide: "leave",
+                    autoHideDelay: 500,
+                    autoHideSuspend: false,
+                },
+            });
+
+            element.setAttribute("data-scrollbar-initialized", "true");
+        };
+
+        const katexObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    processKatexElement(entry.target as HTMLElement);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, katexObserverOptions);
+
+        katexElements.forEach((element) => {
+            katexObserver.observe(element);
+        });
+    }
+
+    function init() {
+        // disableAnimation()()		// TODO
+        loadTheme();
+        loadHue();
+        initCustomScrollbar();
+    }
+
+    /* Load settings when entering the site */
+    init();
+
+    const setup = () => {
+        window.swup.hooks.on("link:click", () => {
+            // Remove the delay for the first time page load
+            document.documentElement.style.setProperty(
+                "--content-delay",
+                "0ms",
+            );
+        });
+        window.swup.hooks.on("content:replace", initCustomScrollbar);
+        window.swup.hooks.on(
+            "visit:start",
+            (visit: { to: { url: string } }) => {
+                // increase the page height during page transition to prevent the scrolling animation from jumping
+                const heightExtend =
+                    document.getElementById("page-height-extend");
+                if (heightExtend) {
+                    heightExtend.classList.remove("hidden");
+                }
+
+                // Hide the TOC while scrolling back to top
+                let toc = document.getElementById("toc-wrapper");
+                if (toc) {
+                    toc.classList.add("toc-not-ready");
+                }
+            },
+        );
+        window.swup.hooks.on("page:view", () => {
+            // hide the temp high element when the transition is done
+            const heightExtend = document.getElementById("page-height-extend");
+            if (heightExtend) {
+                heightExtend.classList.remove("hidden");
+            }
+        });
+        window.swup.hooks.on("visit:end", (_visit: { to: { url: string } }) => {
+            setTimeout(() => {
+                const heightExtend =
+                    document.getElementById("page-height-extend");
+                if (heightExtend) {
+                    heightExtend.classList.add("hidden");
+                }
+
+                // Just make the transition looks better
+                const toc = document.getElementById("toc-wrapper");
+                if (toc) {
+                    toc.classList.remove("toc-not-ready");
+                }
+            }, 200);
+        });
+    };
+
+    if (window?.swup?.hooks) setup();
+    else document.addEventListener("swup:enable", setup);
+
+    let backToTopBtn = document.getElementById("back-to-top-btn");
+    function scrollFunction() {
+        if (backToTopBtn) {
+            const threshold = 400; // Show back to top button after scrolling 400px
+            if (
+                document.body.scrollTop > threshold ||
+                document.documentElement.scrollTop > threshold
+            ) {
+                backToTopBtn.classList.remove("hide");
+            } else {
+                backToTopBtn.classList.add("hide");
+            }
+        }
+    }
+    window.onscroll = scrollFunction;
 </script>
 
 <script>
-import PhotoSwipeLightbox from "photoswipe/lightbox"
-import "photoswipe/style.css"
+    import PhotoSwipeLightbox from "photoswipe/lightbox";
+    import "photoswipe/style.css";
 
-let lightbox: PhotoSwipeLightbox
-let pswp = import("photoswipe")
+    let lightbox: PhotoSwipeLightbox;
+    let pswp = import("photoswipe");
 
-function createPhotoSwipe() {
-	lightbox = new PhotoSwipeLightbox({
-		gallery: ".custom-md img, #post-cover img",
-		pswpModule: () => pswp,
-		closeSVG: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>',
-		zoomSVG: '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M340-540h-40q-17 0-28.5-11.5T260-580q0-17 11.5-28.5T300-620h40v-40q0-17 11.5-28.5T380-700q17 0 28.5 11.5T420-660v40h40q17 0 28.5 11.5T500-580q0 17-11.5 28.5T460-540h-40v40q0 17-11.5 28.5T380-460q-17 0-28.5-11.5T340-500v-40Zm40 220q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>',
-		padding: { top: 20, bottom: 20, left: 20, right: 20 },
-		wheelToZoom: true,
-		arrowPrev: false,
-		arrowNext: false,
-		imageClickAction: 'close',
-		tapAction: 'close',
-		doubleTapAction: 'zoom',
-	})
+    function createPhotoSwipe() {
+        lightbox = new PhotoSwipeLightbox({
+            gallery: ".custom-md img, #post-cover img",
+            pswpModule: () => pswp,
+            closeSVG:
+                '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>',
+            zoomSVG:
+                '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M340-540h-40q-17 0-28.5-11.5T260-580q0-17 11.5-28.5T300-620h40v-40q0-17 11.5-28.5T380-700q17 0 28.5 11.5T420-660v40h40q17 0 28.5 11.5T500-580q0 17-11.5 28.5T460-540h-40v40q0 17-11.5 28.5T380-460q-17 0-28.5-11.5T340-500v-40Zm40 220q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l224 224q11 11 11 28t-11 28q-11 11-28 11t-28-11L532-372q-30 24-69 38t-83 14Zm0-80q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg>',
+            padding: { top: 20, bottom: 20, left: 20, right: 20 },
+            wheelToZoom: true,
+            arrowPrev: false,
+            arrowNext: false,
+            imageClickAction: "close",
+            tapAction: "close",
+            doubleTapAction: "zoom",
+        });
 
-	lightbox.addFilter("domItemData", (itemData, element) => {
-		if (element instanceof HTMLImageElement) {
-			itemData.src = element.src
+        lightbox.addFilter("domItemData", (itemData, element) => {
+            if (element instanceof HTMLImageElement) {
+                itemData.src = element.src;
 
-			itemData.w = Number(element.naturalWidth || window.innerWidth)
-			itemData.h = Number(element.naturalHeight || window.innerHeight)
+                itemData.w = Number(element.naturalWidth || window.innerWidth);
+                itemData.h = Number(
+                    element.naturalHeight || window.innerHeight,
+                );
 
-			itemData.msrc = element.src
-		}
+                itemData.msrc = element.src;
+            }
 
-		return itemData
-	})
+            return itemData;
+        });
 
-	lightbox.init()
-}
+        lightbox.init();
+    }
 
-const setup = () => {
-	if (!lightbox) {
-		createPhotoSwipe()
-	}
-	window.swup.hooks.on("page:view", () => {
-		createPhotoSwipe()
-	})
+    const setup = () => {
+        if (!lightbox) {
+            createPhotoSwipe();
+        }
+        window.swup.hooks.on("page:view", () => {
+            createPhotoSwipe();
+        });
 
-	window.swup.hooks.on(
-		"content:replace",
-		() => {
-			lightbox?.destroy?.()
-		},
-		{ before: true },
-	)
-}
+        window.swup.hooks.on(
+            "content:replace",
+            () => {
+                lightbox?.destroy?.();
+            },
+            { before: true },
+        );
+    };
 
-console.debug(`
+    console.debug(
+        `
 く__,.ヘヽ.        /  ,ー､ 〉
          ＼ ', !-─‐-i  /  /´
          ／｀ｰ'       L/／｀ヽ､
@@ -497,12 +630,13 @@ console.debug(`
                 ﾄ-,/  |___./
                 'ｰ'    !_,.:
 %cHello from%cFuwari`,
-	"padding:2px 6px;border-radius:3px 0 0 3px;color:#fff;background:#FF6699;font-weight: bold;",
-	"padding:2px 6px;border-radius:0 3px 3px 0;color:#fff;background:#FF9999;font-weight: bold;")
+        "padding:2px 6px;border-radius:3px 0 0 3px;color:#fff;background:#FF6699;font-weight: bold;",
+        "padding:2px 6px;border-radius:0 3px 3px 0;color:#fff;background:#FF9999;font-weight: bold;",
+    );
 
-if (window.swup) {
-	setup()
-} else {
-	document.addEventListener("swup:enable", setup)
-}
+    if (window.swup) {
+        setup();
+    } else {
+        document.addEventListener("swup:enable", setup);
+    }
 </script>

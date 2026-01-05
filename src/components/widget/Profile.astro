@@ -19,7 +19,7 @@ const config = profileConfig;
                         <Icon name={item.icon} class="text-[1.5rem]" />
                     </a>
             )}
-            {config.links.length == 1 && <a rel="me" aria-label={config.links[0].name} href={config.links[0].url} target="_blank"
+            {config.links.length == 1 && <a rel="me" aria-label={config.links[0].name} href={config.links[0].url} target="_blank" rel="noopener noreferrer"
                                             class="btn-regular rounded-lg h-10 gap-2 px-3 font-bold active:scale-95">
                 <Icon name={config.links[0].icon} class="text-[1.5rem]" />
                 {config.links[0].name}

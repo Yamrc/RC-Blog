@@ -106,7 +106,7 @@ const ogImageUrl = await getOgImageUrl(entry.data.image, entry.id);
                         <Icon name="material-symbols:visibility-outline-rounded" />
                     </div>
                     <div class="text-sm flex items-center gap-1">
-                        <ViewCounter client:only="svelte" path={`/posts/${entry.slug}/`} class="font-medium" />
+                        <ViewCounter client:only="svelte" path={`/posts/${entry.slug}/`} className="font-medium" />
                         {i18n(I18nKey.pageViews)}
                     </div>
                 </div>
@@ -115,7 +115,7 @@ const ogImageUrl = await getOgImageUrl(entry.data.image, entry.id);
                         <Icon name="material-symbols:person-outline-rounded" />
                     </div>
                     <div class="text-sm flex items-center gap-1">
-                        <ViewCounter client:only="svelte" path={`/posts/${entry.slug}/`} metric="visitors" class="font-medium" />
+                        <ViewCounter client:only="svelte" path={`/posts/${entry.slug}/`} metric="visitors" className="font-medium" />
                         {i18n(I18nKey.visitors)}
                     </div>
                 </div>
@@ -166,7 +166,7 @@ const ogImageUrl = await getOgImageUrl(entry.data.image, entry.id);
 
             {licenseConfig.enable && <License title={entry.data.title} slug={entry.slug} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
 
-            {giscusConfig.enable && <Giscus client:only="svelte" class="mb-6" />}
+            {giscusConfig.enable && <Giscus client:only="svelte" className="mb-6" />}
         </div>
     </div>
 

@@ -12,7 +12,7 @@ const currentYear = new Date().getFullYear();
 ---
 
 <div class="transition border-t border-black/10 dark:border-white/15 my-10 border-dashed mx-32"></div>
-<div class="transition border-dashed border-[oklch(85%_0.01_var(--hue))] dark:border-white/15 rounded-2xl mb-12 flex flex-col items-center justify-center px-6" role="contentinfo" aria-label="Footer Information">
+<footer class="transition border-dashed border-[oklch(85%_0.01_var(--hue))] dark:border-white/15 rounded-2xl mb-12 flex flex-col items-center justify-center px-6" role="contentinfo" aria-label="Footer Information">
     <div class="transition text-50 text-sm text-center">
         &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}. All Rights Reserved. /
         <a class="transition link text-(--primary) font-medium" href={url('feed/')}>RSS & Atom</a> /
@@ -20,9 +20,9 @@ const currentYear = new Date().getFullYear();
     </div>
     <div class="transition text-50 text-sm text-center">
         Powered by
-        <a class="transition link text-(--primary) font-medium" target="_blank" href="https://astro.build">Astro</a> &
-        <a class="transition link text-(--primary) font-medium" target="_blank" href="https://github.com/saicaca/fuwari">Fuwari</a>
-        {siteConfig.record?.enable && <>{" / "}<a class="transition link text-(--primary) font-medium whitespace-nowrap" target="_blank" href={siteConfig.record.url}>{siteConfig.record.text}</a></>}
+        <a class="transition link text-(--primary) font-medium" target="_blank" rel="noopener noreferrer" href="https://astro.build">Astro</a> &
+        <a class="transition link text-(--primary) font-medium" target="_blank" rel="noopener noreferrer" href="https://github.com/saicaca/fuwari">Fuwari</a>
+        {siteConfig.record?.enable && <>{" / "}<a class="transition link text-(--primary) font-medium whitespace-nowrap" target="_blank" rel="noopener noreferrer" href={siteConfig.record.url}>{siteConfig.record.text}</a></>}
     </div>
     <CreateDays class="transition text-center text-50 text-sm" />
     {umamiConfig.enable && umamiConfig.shareId && (
@@ -31,7 +31,7 @@ const currentYear = new Date().getFullYear();
                 <Icon name="material-symbols:visibility-outline-rounded" class="text-base" />
                 <span class="flex items-center gap-1">
                     {i18n(I18nKey.siteViews)}
-                    <ViewCounter client:only="svelte" class="text-xs font-medium" />
+                    <ViewCounter client:only="svelte" className="text-xs font-medium" />
                 </span>
             </div>
             <span class="text-black/30 dark:text-white/30">/</span>
@@ -39,9 +39,9 @@ const currentYear = new Date().getFullYear();
                 <Icon name="material-symbols:person-outline-rounded" class="text-base" />
                 <span class="flex items-center gap-1">
                     {i18n(I18nKey.siteVisitors)}
-                    <ViewCounter client:only="svelte" class="text-xs font-medium" metric="visitors" />
+                    <ViewCounter client:only="svelte" className="text-xs font-medium" metric="visitors" />
                 </span>
             </div>
         </div>
     )}
-</div>
+</footer>

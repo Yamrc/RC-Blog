@@ -92,13 +92,13 @@ const { remarkPluginFrontmatter } = await entry.render();
                     <div class="opacity-40">|</div>
                     <div class="flex items-center gap-1">
                         <Icon name="material-symbols:visibility-outline-rounded" class="text-base" />
-                        <ViewCounter client:only="svelte" path={viewPath} class="font-medium" />
+                        <ViewCounter client:only="svelte" path={viewPath} className="font-medium" />
                         {i18n(I18nKey.pageViews)}
                     </div>
                     <div class="opacity-40">/</div>
                     <div class="flex items-center gap-1">
                         <Icon name="material-symbols:person-outline-rounded" class="text-base" />
-                        <ViewCounter client:only="svelte" path={viewPath} metric="visitors" class="font-medium" />
+                        <ViewCounter client:only="svelte" path={viewPath} metric="visitors" className="font-medium" />
                         {i18n(I18nKey.visitors)}
                     </div>
                 </>
