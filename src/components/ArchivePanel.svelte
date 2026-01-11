@@ -1,36 +1,28 @@
 <script lang="ts">
+import type { CollectionEntry } from "astro:content";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import Icon from "@iconify/svelte";
 import { getPostUrlBySlug } from "@utils/url-utils";
 import { onMount } from "svelte";
 
-export let tags: string[];
-export let categories: string[];
-export let sortedPosts: Post[] = [];
-
-const params = new URLSearchParams(window.location.search);
-tags = params.has("tag") ? params.getAll("tag") : [];
-categories = params.has("category") ? params.getAll("category") : [];
-const uncategorized = params.get("uncategorized");
+type PostData = CollectionEntry<"posts">["data"];
 
 interface Post {
 	slug: string;
-	data: {
-		title: string;
-		tags: string[];
-		category?: string;
-		published: Date;
-		pinned?: boolean;
-	};
+	data: PostData;
 }
 
-interface Group {
-	year: number;
-	posts: Post[];
-}
+let {
+	tags = [],
+	categories = [],
+	sortedPosts = [],
+}: { tags?: string[]; categories?: string[]; sortedPosts?: Post[] } = $props();
 
-let groups: Group[] = [];
+let tagState: string[] = $state([]);
+let categoryState: string[] = $state([]);
+let uncategorizedState: string | null = $state(null);
+let groups: { year: number; posts: Post[] }[] = $state([]);
 
 function formatDate(date: Date) {
 	const month = (date.getMonth() + 1).toString().padStart(2, "0");
@@ -42,24 +34,25 @@ function formatTag(tagList: string[]) {
 	return tagList.map((t) => `#${t}`).join(" ");
 }
 
-onMount(async () => {
+function filterAndGroupPosts() {
 	let filteredPosts: Post[] = sortedPosts;
 
-	if (tags.length > 0) {
+	if (tagState.length > 0) {
 		filteredPosts = filteredPosts.filter(
 			(post) =>
 				Array.isArray(post.data.tags) &&
-				post.data.tags.some((tag) => tags.includes(tag)),
+				post.data.tags.some((tag: string) => tagState.includes(tag)),
 		);
 	}
 
-	if (categories.length > 0) {
+	if (categoryState.length > 0) {
 		filteredPosts = filteredPosts.filter(
-			(post) => post.data.category && categories.includes(post.data.category),
+			(post) =>
+				post.data.category && categoryState.includes(post.data.category),
 		);
 	}
 
-	if (uncategorized) {
+	if (uncategorizedState) {
 		filteredPosts = filteredPosts.filter((post) => !post.data.category);
 	}
 
@@ -83,6 +76,14 @@ onMount(async () => {
 	groupedPostsArray.sort((a, b) => b.year - a.year);
 
 	groups = groupedPostsArray;
+}
+
+onMount(() => {
+	const params = new URLSearchParams(window.location.search);
+	tagState = params.has("tag") ? params.getAll("tag") : [];
+	categoryState = params.has("category") ? params.getAll("category") : [];
+	uncategorizedState = params.get("uncategorized");
+	filterAndGroupPosts();
 });
 </script>
 

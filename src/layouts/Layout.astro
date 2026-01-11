@@ -214,6 +214,7 @@ const siteLang = lang.replace("_", "-");
         {
             umamiConfig.enable && import.meta.env.PROD && (
                 <script
+                    is:inline
                     src={
                         umamiConfig.scriptUrl ||
                         "https://cloud.umami.is/script.js"
@@ -237,6 +238,7 @@ const siteLang = lang.replace("_", "-");
 
         {/* JSON-LD Structured Data */}
         <script
+            is:inline
             type="application/ld+json"
             set:html={(() => {
                 const imageUrl =
@@ -492,7 +494,7 @@ function disableAnimation() {
         window.swup.hooks.on("content:replace", initCustomScrollbar);
         window.swup.hooks.on(
             "visit:start",
-            (visit: { to: { url: string } }) => {
+            () => {
                 // increase the page height during page transition to prevent the scrolling animation from jumping
                 const heightExtend =
                     document.getElementById("page-height-extend");
@@ -514,7 +516,7 @@ function disableAnimation() {
                 heightExtend.classList.remove("hidden");
             }
         });
-        window.swup.hooks.on("visit:end", (_visit: { to: { url: string } }) => {
+        window.swup.hooks.on("visit:end", () => {
             setTimeout(() => {
                 const heightExtend =
                     document.getElementById("page-height-extend");

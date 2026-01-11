@@ -5,11 +5,15 @@ import { onDestroy, onMount } from "svelte";
 import { giscusConfig } from "@/config";
 
 let hue = getHue();
-let mode = document.documentElement.classList.contains("dark")
-	? "dark"
-	: "light";
+let mode =
+	typeof document !== "undefined" &&
+	document.documentElement.classList.contains("dark")
+		? "dark"
+		: "light";
 let theme: string;
 let iframe: HTMLIFrameElement | null = null;
+
+let { className = "" }: { className?: string } = $props();
 
 // iframe，不好搞啊，能设置html的style，定义var都好搞多了...只能这样屎上雕花了
 const build_theme = () => {
@@ -65,18 +69,20 @@ onMount(() => {
 onDestroy(() => observer.disconnect());
 </script>
 
-<Giscus
-	id="comments"
-	{theme}
-	repo={giscusConfig.repo}
-	repoId={giscusConfig.repoId}
-	category={giscusConfig.category}
-	categoryId={giscusConfig.categoryId}
-	mapping={giscusConfig.mapping}
-	term={""}
-	strict={giscusConfig.strict}
-	reactionsEnabled={giscusConfig.reactionsEnabled}
-	inputPosition={giscusConfig.inputPosition}
-	lang={giscusConfig.lang}
-	loading={giscusConfig.loading}
-/>
+<div class={className}>
+	<Giscus
+		id="comments"
+		{theme}
+		repo={giscusConfig.repo}
+		repoId={giscusConfig.repoId}
+		category={giscusConfig.category}
+		categoryId={giscusConfig.categoryId}
+		mapping={giscusConfig.mapping}
+		term={""}
+		strict={giscusConfig.strict}
+		reactionsEnabled={giscusConfig.reactionsEnabled}
+		inputPosition={giscusConfig.inputPosition}
+		lang={giscusConfig.lang}
+		loading={giscusConfig.loading}
+	/>
+</div>
