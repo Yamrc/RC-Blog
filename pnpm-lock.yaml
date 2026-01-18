@@ -51,8 +51,8 @@ importers:
         specifier: ^1.2.4
         version: 1.2.4
       '@iconify-json/material-symbols':
-        specifier: ^1.2.51
-        version: 1.2.51
+        specifier: ^1.2.52
+        version: 1.2.52
       '@iconify/svelte':
         specifier: ^4.2.0
         version: 4.2.0(svelte@5.46.4)
@@ -75,8 +75,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0(astro@5.16.11(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@2.79.2)(sass@1.80.4)(stylus@0.64.0)(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.1))(mermaid@11.12.2)
       astrojs-atom:
-        specifier: ^1.0.162
-        version: 1.0.162(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@2.79.2)(sass@1.80.4)(stylus@0.64.0)(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.1)
+        specifier: ^1.0.208
+        version: 1.0.208(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@2.79.2)(sass@1.80.4)(stylus@0.64.0)(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.1)
       hastscript:
         specifier: ^9.0.1
         version: 9.0.1
@@ -1110,8 +1110,8 @@ packages:
   '@iconify-json/fa6-solid@1.2.4':
     resolution: {integrity: sha512-LmDNNdJVyvF5mPm1yxWvL8KjCc/E8LzoqnF1LNTVpyY2ZJRUlGOWuPIThdbuFBF2IovgttkIyumhyqfmlHdwKg==}
 
-  '@iconify-json/material-symbols@1.2.51':
-    resolution: {integrity: sha512-GkxlK8ocHi3NVVozaW62jm3qR9fNY3xX2penFtIRvoe1OtNhJ2KD4KRzv8x34pugMOAZYK8sALMcU30gDgCi1A==}
+  '@iconify-json/material-symbols@1.2.52':
+    resolution: {integrity: sha512-vOBmoF2J5GeKgaTqOcdIHjuPXcGVvjRMlviGgE1jKAh85iXSsFmLVxiJKMXvijrGVLmcqrkEmkMiSem7uWfGpA==}
 
   '@iconify/svelte@4.2.0':
     resolution: {integrity: sha512-fEl0T7SAPonK7xk6xUlRPDmFDZVDe2Z7ZstlqeDS/sS8ve2uyU+Qa8rTWbIqzZJlRvONkK5kVXiUf9nIc+6OOQ==}
@@ -2233,8 +2233,8 @@ packages:
     engines: {node: 18.20.8 || ^20.3.0 || >=22.0.0, npm: '>=9.6.5', pnpm: '>=7.1.0'}
     hasBin: true
 
-  astrojs-atom@1.0.162:
-    resolution: {integrity: sha512-nfpuN80MFTp+YHDIMUgtjWZAsvcs9FE5BZpaizaU+djJ6KC9UHBLi36prxsZTuW4JgK4maTFcRw/GeEKoIx4+g==}
+  astrojs-atom@1.0.208:
+    resolution: {integrity: sha512-m6Qror3Cfhx8LBbi5L5+4uOHyDL1JUTWdXGbtD/whsu3DqlYpUVPtVnfty8RvDkFY660ZbbgTRihq1r9z/OpPg==}
 
   async-function@1.0.0:
     resolution: {integrity: sha512-hsU18Ae8CDTR6Kgu9DYf0EbCr/a5iGL0rytQDobUcdpYOKokk8LEjVphnXkDkgpi0wYVsqrXuP0bZxJaTqdgoA==}
@@ -3038,10 +3038,6 @@ packages:
 
   fast-uri@3.1.0:
     resolution: {integrity: sha512-iPeeDKJSWf4IEOasVVrknXpaBV0IApz/gp7S2bb7Z4Lljbl2MGJRqInZiUrQwV16cpzw/D3S5j5Julj/gT52AA==}
-
-  fast-xml-parser@5.3.2:
-    resolution: {integrity: sha512-n8v8b6p4Z1sMgqRmqLJm3awW4NX7NkaKPfb3uJIBTSH7Pdvufi3PQ3/lJLQrvxcMYl7JI2jnDO90siPEpD8JBA==}
-    hasBin: true
 
   fast-xml-parser@5.3.3:
     resolution: {integrity: sha512-2O3dkPAAC6JavuMm8+4+pgTk+5hoAs+CjZ+sWcQLkX9+/tHRuTkQh/Oaifr8qDmZ8iEHb771Ea6G8CdwkrgvYA==}
@@ -5005,9 +5001,6 @@ packages:
     resolution: {integrity: sha512-gmBGslpoQJtgnMAvOVqGZpEz9dyoKTCzy2nfz/n8aIFhN/jCE/rCmcxabB6jOOHV+0WNnylOxaxBQPSvcWklhA==}
     engines: {node: '>=12'}
 
-  strnum@2.1.1:
-    resolution: {integrity: sha512-7ZvoFTiCnGxBtDqJ//Cu6fWtZtc7Y3x+QOirG15wztbdngGSkht27o2pyGWrVy0b4WAy3jbKmnoK6g5VlVNUUw==}
-
   strnum@2.1.2:
     resolution: {integrity: sha512-l63NF9y/cLROq/yqKXSLtcMeeyOfnSQlfMSlzFt/K73oIaD8DGaQWd7Z34X9GPiKqP5rbSh84Hl4bOlLcjiSrQ==}
 
@@ -6751,7 +6744,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/material-symbols@1.2.51':
+  '@iconify-json/material-symbols@1.2.52':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -7994,10 +7987,10 @@ snapshots:
       - uploadthing
       - yaml
 
-  astrojs-atom@1.0.162(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@2.79.2)(sass@1.80.4)(stylus@0.64.0)(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.1):
+  astrojs-atom@1.0.208(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@2.79.2)(sass@1.80.4)(stylus@0.64.0)(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.1):
     dependencies:
       astro: 5.16.11(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@2.79.2)(sass@1.80.4)(stylus@0.64.0)(terser@5.44.1)(typescript@5.9.3)(yaml@2.8.1)
-      fast-xml-parser: 5.3.2
+      fast-xml-parser: 5.3.3
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -9001,10 +8994,6 @@ snapshots:
       micromatch: 4.0.8
 
   fast-uri@3.1.0: {}
-
-  fast-xml-parser@5.3.2:
-    dependencies:
-      strnum: 2.1.1
 
   fast-xml-parser@5.3.3:
     dependencies:
@@ -11640,8 +11629,6 @@ snapshots:
   strip-ansi@7.1.2:
     dependencies:
       ansi-regex: 6.2.2
-
-  strnum@2.1.1: {}
 
   strnum@2.1.2: {}
 
