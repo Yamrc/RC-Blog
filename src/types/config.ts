@@ -130,6 +130,5 @@ export type UmamiConfig = {
 	scriptUrl?: string;
 	websiteId?: string;
 	apiBase?: string;
-	shareId?: string;
-	timezone?: string;
+	apiKey?: string;
 };

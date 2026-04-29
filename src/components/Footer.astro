@@ -25,7 +25,7 @@ const currentYear = new Date().getFullYear();
         {siteConfig.record?.enable && <>{" / "}<a class="transition link text-(--primary) font-medium whitespace-nowrap" target="_blank" rel="noopener noreferrer" href={siteConfig.record.url}>{siteConfig.record.text}</a></>}
     </div>
     <CreateDays class="transition text-center text-50 text-sm" />
-    {umamiConfig.enable && umamiConfig.shareId && (
+    {umamiConfig.enable && umamiConfig.apiKey && (
         <div class="flex flex-wrap items-center justify-center gap-2 text-xs text-black/50 dark:text-white/50">
             <div class="flex items-center gap-1">
                 <Icon name="material-symbols:visibility-outline-rounded" class="text-base" />
