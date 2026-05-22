@@ -3,7 +3,6 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import Icon from "@iconify/svelte";
 import { url } from "@utils/url-utils.ts";
-import { OverlayScrollbars } from "overlayscrollbars";
 import { onMount } from "svelte";
 import type { SearchResult } from "@/global";
 
@@ -85,19 +84,6 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 	}
 };
 
-const initPanelScrollbar = () => {
-	const panel = document.getElementById("search-panel-inner");
-	if (!panel) return;
-	OverlayScrollbars(panel, {
-		scrollbars: {
-			theme: "scrollbar-base scrollbar-auto",
-			autoHide: "move",
-			autoHideDelay: 500,
-			autoHideSuspend: false,
-		},
-	});
-};
-
 onMount(() => {
 	const initializeSearch = () => {
 		initialized = true;
@@ -135,8 +121,6 @@ onMount(() => {
 			}
 		}, 2000); // Adjust timeout as needed
 	}
-
-	initPanelScrollbar();
 });
 
 $: if (initialized && keywordDesktop) {
@@ -175,7 +159,7 @@ $: if (initialized && keywordMobile) {
 	id="search-panel"
 	class="float-panel float-panel-closed absolute md:w-[30rem] top-20 left-4 md:left-[unset] right-4 shadow-2xl rounded-2xl p-2"
 >
-	<div id="search-panel-inner" class="search-panel">
+	<div id="search-panel-inner" class="search-panel native-scrollbar">
 		<!-- search bar inside panel for phone/tablet -->
 		<div
 			id="search-bar-inside"

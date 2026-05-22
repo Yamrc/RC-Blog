@@ -68,7 +68,6 @@ const siteLang = lang.replace("_", "-");
 <html
     lang={siteLang}
     class="bg-(--page-bg) transition text-[14px] md:text-[16px] initial-load"
-    data-overlayscrollbars-initialize
 >
     <head>
         <title>{pageTitle}</title>
@@ -297,9 +296,13 @@ const siteLang = lang.replace("_", "-");
         />
         <link rel="sitemap" href="/sitemap-index.xml" />
     </head>
-    <body class="min-h-screen transition" data-overlayscrollbars-initialize>
+    <body class="min-h-screen transition">
         <ConfigCarrier />
         <slot />
+
+        <div id="page-scrollbar" class="hidden" aria-hidden="true">
+            <div id="page-scrollbar-thumb"></div>
+        </div>
 
         <!-- increase the page height during page transition to prevent the scrolling animation from jumping -->
         <div id="page-height-extend" class="hidden h-[300vh]"></div>
@@ -307,13 +310,6 @@ const siteLang = lang.replace("_", "-");
 </html>
 
 <script>
-    import "overlayscrollbars/overlayscrollbars.css";
-    import {
-        OverlayScrollbars,
-        // ScrollbarsHidingPlugin,
-        // SizeObserverPlugin,
-        // ClickScrollPlugin
-    } from "overlayscrollbars";
     import {
         getHue,
         getStoredTheme,
@@ -401,8 +397,12 @@ function disableAnimation() {
         setHue(getHue());
     }
 
-    let bodyScrollbarInitialized = false;
     let initialLoadAnimationCleared = false;
+    let scrollbarRevealTimer: number | undefined;
+    let scrollbarUpdateFrame = 0;
+    let scrollbarDragStartY = 0;
+    let scrollbarDragStartScrollY = 0;
+    let scrollbarDragging = false;
 
     function clearInitialLoadAnimation() {
         if (initialLoadAnimationCleared) return;
@@ -410,34 +410,99 @@ function disableAnimation() {
         document.documentElement.classList.remove("initial-load");
     }
 
-    function initCustomScrollbar() {
-        const bodyElement = document.querySelector("body");
-        if (!bodyElement) return;
-        if (!bodyScrollbarInitialized) {
-            OverlayScrollbars(
-                // docs say that a initialization to the body element would affect native functionality like window.scrollTo
-                // but just leave it here for now
-                {
-                    target: bodyElement,
-                    cancel: {
-                        nativeScrollbarsOverlaid: true, // don't initialize the overlay scrollbar if there is a native one
-                    },
-                },
-                {
-                    scrollbars: {
-                        theme: "scrollbar-base scrollbar-auto py-1",
-                        autoHide: "move",
-                        autoHideDelay: 500,
-                        autoHideSuspend: false,
-                    },
-                },
-            );
-            bodyScrollbarInitialized = true;
+    function revealPageScrollbar(delay = 900) {
+        document.documentElement.classList.add("scrollbar-interacting");
+        window.clearTimeout(scrollbarRevealTimer);
+        scrollbarRevealTimer = window.setTimeout(() => {
+            document.documentElement.classList.remove("scrollbar-interacting");
+        }, delay);
+    }
+
+    function updatePageScrollbar() {
+        const scrollbar = document.getElementById("page-scrollbar");
+        const thumb = document.getElementById("page-scrollbar-thumb");
+        if (!scrollbar || !thumb) return;
+
+        const scrollHeight = document.documentElement.scrollHeight;
+        const clientHeight = document.documentElement.clientHeight;
+        const scrollable = scrollHeight - clientHeight;
+        if (scrollable <= 1) {
+            scrollbar.classList.add("hidden");
+            return;
         }
 
+        scrollbar.classList.remove("hidden");
+        const trackHeight = scrollbar.clientHeight;
+        const thumbHeight = Math.max(
+            48,
+            Math.round((clientHeight / scrollHeight) * trackHeight),
+        );
+        const maxThumbTop = trackHeight - thumbHeight;
+        const thumbTop = Math.round((window.scrollY / scrollable) * maxThumbTop);
+
+        thumb.style.height = `${thumbHeight}px`;
+        thumb.style.transform = `translate3d(0, ${thumbTop}px, 0)`;
+    }
+
+    function queuePageScrollbarUpdate() {
+        if (scrollbarUpdateFrame) return;
+        scrollbarUpdateFrame = window.requestAnimationFrame(() => {
+            scrollbarUpdateFrame = 0;
+            updatePageScrollbar();
+        });
+    }
+
+    function handlePageScroll() {
+        revealPageScrollbar();
+        updatePageScrollbar();
+    }
+
+    function setupPageScrollbar() {
+        const scrollbar = document.getElementById("page-scrollbar");
+        const thumb = document.getElementById("page-scrollbar-thumb");
+        if (!scrollbar || !thumb || scrollbar.dataset.initialized) return;
+        scrollbar.dataset.initialized = "true";
+
+        thumb.addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+            scrollbarDragging = true;
+            scrollbarDragStartY = event.clientY;
+            scrollbarDragStartScrollY = window.scrollY;
+            scrollbar.classList.add("dragging");
+            thumb.setPointerCapture(event.pointerId);
+            revealPageScrollbar(10000);
+        });
+
+        thumb.addEventListener("pointermove", (event) => {
+            if (!scrollbarDragging) return;
+
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = document.documentElement.clientHeight;
+            const scrollable = scrollHeight - clientHeight;
+            const thumbHeight = thumb.getBoundingClientRect().height;
+            const maxThumbTop = scrollbar.clientHeight - thumbHeight;
+            const delta = event.clientY - scrollbarDragStartY;
+            const scrollDelta = maxThumbTop > 0 ? (delta / maxThumbTop) * scrollable : 0;
+
+            window.scrollTo({
+                top: scrollbarDragStartScrollY + scrollDelta,
+                behavior: "auto",
+            });
+        });
+
+        thumb.addEventListener("pointerup", (event) => {
+            scrollbarDragging = false;
+            scrollbar.classList.remove("dragging");
+            thumb.releasePointerCapture(event.pointerId);
+            revealPageScrollbar();
+        });
+    }
+
+    function initMathScrollbars() {
         const katexElements = document.querySelectorAll(
             ".katex-display",
         ) as NodeListOf<HTMLElement>;
+        if (katexElements.length === 0) return;
 
         const katexObserverOptions = {
             root: null,
@@ -458,15 +523,6 @@ function disableAnimation() {
 
             element.parentNode.insertBefore(container, element);
             container.appendChild(element);
-
-            OverlayScrollbars(container, {
-                scrollbars: {
-                    theme: "scrollbar-base scrollbar-auto",
-                    autoHide: "leave",
-                    autoHideDelay: 500,
-                    autoHideSuspend: false,
-                },
-            });
 
             element.setAttribute("data-scrollbar-initialized", "true");
         };
@@ -489,7 +545,9 @@ function disableAnimation() {
         // disableAnimation()()		// TODO
         loadTheme();
         loadHue();
-        initCustomScrollbar();
+        setupPageScrollbar();
+        updatePageScrollbar();
+        initMathScrollbars();
         window.setTimeout(clearInitialLoadAnimation, 1000);
     }
 
@@ -505,7 +563,10 @@ function disableAnimation() {
             );
             clearInitialLoadAnimation();
         });
-        window.swup.hooks.on("content:replace", initCustomScrollbar);
+        window.swup.hooks.on("content:replace", () => {
+            initMathScrollbars();
+            window.requestAnimationFrame(updatePageScrollbar);
+        });
         window.swup.hooks.on(
             "visit:start",
             () => {
@@ -549,6 +610,27 @@ function disableAnimation() {
 
     if (window?.swup?.hooks) setup();
     else document.addEventListener("swup:enable", setup);
+
+    window.addEventListener(
+        "scroll",
+        handlePageScroll,
+        { passive: true },
+    );
+    window.addEventListener("resize", queuePageScrollbarUpdate);
+    window.addEventListener(
+        "pointermove",
+        (event) => {
+            const verticalGutter = 24;
+            const horizontalGutter = 24;
+            if (
+                window.innerWidth - event.clientX <= verticalGutter ||
+                window.innerHeight - event.clientY <= horizontalGutter
+            ) {
+                revealPageScrollbar(1200);
+            }
+        },
+        { passive: true },
+    );
 
     let backToTopBtn = document.getElementById("back-to-top-btn");
     function scrollFunction() {
