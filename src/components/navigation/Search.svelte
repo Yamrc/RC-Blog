@@ -143,9 +143,9 @@ $: if (initialized && keywordMobile) {
 ">
     <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30" />
     <label for="search-input-desktop" class="sr-only">{i18n(I18nKey.search)}</label>
-    <input id="search-input-desktop" placeholder="{i18n(I18nKey.search)}" type="search" bind:value={keywordDesktop} on:focus={() => search(keywordDesktop, true)}
-           class="transition-all pl-10 text-sm bg-transparent outline-0 h-full w-40 active:w-60 focus:w-60 text-black/50 dark:text-white/50 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-cancel-button]:hidden"
-    >
+	<input id="search-input-desktop" placeholder="{i18n(I18nKey.search)}" type="search" bind:value={keywordDesktop} on:focus={() => search(keywordDesktop, true)}
+	       class="search-input transition-[width] pl-10 text-sm bg-transparent outline-0 h-full w-40 active:w-60 focus:w-60 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-cancel-button]:hidden"
+	>
 </div>
 
 <!-- toggle btn for phone/tablet view -->
@@ -177,8 +177,8 @@ $: if (initialized && keywordMobile) {
 				placeholder="{i18n(I18nKey.search)}"
 				bind:value={keywordMobile}
 				type="search"
-				class="pl-10 absolute inset-0 text-sm bg-transparent outline-0
-               focus:w-60 text-black/50 dark:text-white/50"
+				class="search-input pl-10 absolute inset-0 text-sm bg-transparent outline-0
+		       focus:w-60"
 			/>
 		</div>
 
@@ -207,6 +207,29 @@ $: if (initialized && keywordMobile) {
   input:focus {
     outline: 0;
   }
+
+  .search-input {
+    --search-input-color: rgb(0 0 0 / 50%);
+
+    color: var(--search-input-color);
+    -webkit-text-fill-color: var(--search-input-color);
+    caret-color: var(--search-input-color);
+    color-scheme: inherit;
+    transition-property: width, color, -webkit-text-fill-color, caret-color;
+    transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .search-input::placeholder {
+    color: var(--search-input-color);
+    opacity: 1;
+    transition: color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  :global(:root.dark) .search-input {
+    --search-input-color: rgb(255 255 255 / 50%);
+  }
+
   .search-panel {
     max-height: calc(100vh - 100px);
     overflow-y: auto;

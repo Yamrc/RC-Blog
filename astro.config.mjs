@@ -8,6 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 import expressiveCode from "astro-expressive-code";
 import icon from "astro-icon";
+import mermaid from "astro-mermaid";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeComponents from "rehype-components"; /* Render the custom directive content */
 import rehypeKatex from "rehype-katex";
@@ -19,12 +20,11 @@ import remarkSectionize from "remark-sectionize";
 import { expressiveCodeConfig } from "./src/config.ts";
 import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-copy-button.js";
 import { pluginLanguageBadge } from "./src/plugins/expressive-code/language-badge.ts";
-import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
-import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
-import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
-import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
-import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
-import mermaid from "astro-mermaid";
+import { AdmonitionComponent } from "./src/plugins/markdown/rehype-component-admonition.mjs";
+import { GithubCardComponent } from "./src/plugins/markdown/rehype-component-github-card.mjs";
+import { parseDirectiveNode } from "./src/plugins/markdown/remark-directive-rehype.js";
+import { remarkExcerpt } from "./src/plugins/markdown/remark-excerpt.js";
+import { remarkReadingTime } from "./src/plugins/markdown/remark-reading-time.mjs";
 
 // https://astro.build/config
 export default defineConfig({

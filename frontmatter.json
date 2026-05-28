@@ -1,78 +1,90 @@
 {
-  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
-  "frontMatter.framework.id": "astro",
-  "frontMatter.preview.host": "http://localhost:4321",
-  "frontMatter.content.publicFolder": "public",
-  "frontMatter.content.pageFolders": [
-    {
-      "title": "posts",
-      "path": "[[workspace]]/src/content/posts"
-    }
-  ],
-  "frontMatter.taxonomy.contentTypes": [
-    {
-      "name": "default",
-      "pageBundle": true,
-      "previewPath": "'blog'",
-      "filePrefix": null,
-      "clearEmpty": true,
-      "fields": [
-        {
-          "title": "title",
-          "name": "title",
-          "type": "string",
-          "single": true
-        },
-        {
-          "title": "description",
-          "name": "description",
-          "type": "string"
-        },
-        {
-          "title": "published",
-          "name": "published",
-          "type": "datetime",
-          "default": "{{now}}",
-          "isPublishDate": true
-        },
-        {
-          "title": "preview",
-          "name": "image",
-          "type": "image",
-          "isPreviewImage": true
-        },
-        {
-          "title": "tags",
-          "name": "tags",
-          "type": "list"
-        },
-        {
-          "title": "category",
-          "name": "category",
-          "type": "string"
-        },
-        {
-          "title": "draft",
-          "name": "draft",
-          "type": "boolean"
-        },
-        {
-          "title": "expiry enabled",
-          "name": "expiry",
-          "type": "boolean",
-          "default": true
-        },
-        {
-          "title": "expiry days",
-          "name": "expiryDays",
-          "type": "number"
-        },
-        {
-          "title": "language",
-          "name": "language",
-          "type": "string"
-        }
-      ]
-    }
-  ]
+	"$schema": "https://frontmatter.codes/frontmatter.schema.json",
+	"frontMatter.framework.id": "astro",
+	"frontMatter.preview.host": "http://localhost:4321",
+	"frontMatter.content.publicFolder": "public",
+	"frontMatter.content.pageFolders": [
+		{
+			"title": "posts",
+			"path": "[[workspace]]/src/content/posts"
+		}
+	],
+	"frontMatter.taxonomy.contentTypes": [
+		{
+			"name": "default",
+			"pageBundle": true,
+			"previewPath": "'blog'",
+			"filePrefix": null,
+			"clearEmpty": true,
+			"fields": [
+				{
+					"title": "title",
+					"name": "title",
+					"type": "string",
+					"single": true
+				},
+				{
+					"title": "description",
+					"name": "description",
+					"type": "string",
+					"default": ""
+				},
+				{
+					"title": "published",
+					"name": "published",
+					"type": "datetime",
+					"default": "{{now}}",
+					"isPublishDate": true
+				},
+				{
+					"title": "preview",
+					"name": "image",
+					"type": "image",
+					"default": "",
+					"isPreviewImage": true
+				},
+				{
+					"title": "tags",
+					"name": "tags",
+					"type": "list",
+					"default": []
+				},
+				{
+					"title": "category",
+					"name": "category",
+					"type": "string",
+					"default": ""
+				},
+				{
+					"title": "draft",
+					"name": "draft",
+					"type": "boolean",
+					"default": false
+				},
+				{
+					"title": "pinned",
+					"name": "pinned",
+					"type": "boolean",
+					"default": false
+				},
+				{
+					"title": "expiry enabled",
+					"name": "expiry",
+					"type": "boolean",
+					"default": true
+				},
+				{
+					"title": "expiry days",
+					"name": "expiryDays",
+					"type": "number"
+				},
+				{
+					"title": "language",
+					"name": "lang",
+					"type": "string",
+					"default": ""
+				}
+			]
+		}
+	]
 }

@@ -1,13 +1,13 @@
 ---
 import { getImage } from "astro:assets";
 import path from "node:path";
-import PostExpiryNotice from "@components/misc/ExpiryNotice.svelte";
-import Giscus from "@components/misc/Giscus.svelte";
-import ImageWrapper from "@components/misc/ImageWrapper.astro";
-import License from "@components/misc/License.astro";
-import Markdown from "@components/misc/Markdown.astro";
-import ViewCounter from "@components/misc/ViewCounter.svelte";
-import PostMetadata from "@components/PostMeta.astro";
+import ImageWrapper from "@components/content/ImageWrapper.astro";
+import Markdown from "@components/content/Markdown.astro";
+import PostExpiryNotice from "@components/post/ExpiryNotice.svelte";
+import Giscus from "@components/post/Giscus.svelte";
+import License from "@components/post/License.astro";
+import PostMetadata from "@components/post/PostMeta.astro";
+import ViewCounter from "@components/post/ViewCounter.svelte";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";

@@ -1,13 +1,13 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import path from "node:path";
-import ViewCounter from "@components/misc/ViewCounter.svelte";
+import ImageWrapper from "@components/content/ImageWrapper.astro";
+import PostMetadata from "@components/post/PostMeta.astro";
+import ViewCounter from "@components/post/ViewCounter.svelte";
 import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import { getDir } from "@utils/url-utils";
 import { Icon } from "astro-icon/components";
-import ImageWrapper from "./misc/ImageWrapper.astro";
-import PostMetadata from "./PostMeta.astro";
 
 interface Props {
 	class?: string;
