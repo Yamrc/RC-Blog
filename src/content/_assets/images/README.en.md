@@ -25,5 +25,5 @@ The image assets in this directory (`src/content/_assets/images/`) are classifie
 - **Commitment**: Reasonable efforts have been made to attribute the source within the article or file notes. If you are the original author and object to the use, please contact me at [yamrci@outlook.com](mailto:yamrci@outlook.com), and I will promptly verify and remove the content.
 
 ---
-*Last Updated: 2025-12-14T02:47:46+0800*<br/>
+*Last Updated: 2025-12-14T02:47:46+0800*  
 *This document is for internal project management and does not extend legal promises to third parties.*
