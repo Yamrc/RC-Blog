@@ -1,13 +1,51 @@
-import PhotoSwipeLightbox from "photoswipe/lightbox";
-import "photoswipe/style.css";
+import type PhotoSwipeLightbox from "photoswipe/lightbox";
 
-let lightbox: PhotoSwipeLightbox;
-const pswp = import("photoswipe");
+let lightbox: PhotoSwipeLightbox | undefined;
+let hooksRegistered = false;
+let setupToken = 0;
+let stylesPromise: Promise<void> | undefined;
 
-function createPhotoSwipe() {
-	lightbox = new PhotoSwipeLightbox({
+const photoswipeStyleElementId = "photoswipe-runtime-styles";
+
+const hasPhotoSwipeImages = () =>
+	document.querySelector(".custom-md img, #post-cover img") !== null;
+
+function destroyPhotoSwipe() {
+	setupToken += 1;
+	lightbox?.destroy?.();
+	lightbox = undefined;
+}
+
+async function loadPhotoSwipeStyles() {
+	if (document.getElementById(photoswipeStyleElementId)) return;
+
+	stylesPromise ??= (async () => {
+		const { default: css } = await import("photoswipe/style.css?raw");
+		if (document.getElementById(photoswipeStyleElementId)) return;
+
+		const style = document.createElement("style");
+		style.id = photoswipeStyleElementId;
+		style.textContent = css;
+		document.head.appendChild(style);
+	})();
+
+	await stylesPromise;
+}
+
+async function createPhotoSwipe() {
+	destroyPhotoSwipe();
+	const token = setupToken;
+
+	if (!hasPhotoSwipeImages()) return;
+
+	await loadPhotoSwipeStyles();
+	const { default: PhotoSwipeLightbox } = await import("photoswipe/lightbox");
+
+	if (token !== setupToken || !hasPhotoSwipeImages()) return;
+
+	const nextLightbox = new PhotoSwipeLightbox({
 		gallery: ".custom-md img, #post-cover img",
-		pswpModule: () => pswp,
+		pswpModule: () => import("photoswipe"),
 		closeSVG:
 			'<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#ffffff"><path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z"/></svg>',
 		zoomSVG:
@@ -21,7 +59,7 @@ function createPhotoSwipe() {
 		doubleTapAction: "zoom",
 	});
 
-	lightbox.addFilter("domItemData", (itemData, element) => {
+	nextLightbox.addFilter("domItemData", (itemData, element) => {
 		if (element instanceof HTMLImageElement) {
 			itemData.src = element.src;
 
@@ -34,25 +72,27 @@ function createPhotoSwipe() {
 		return itemData;
 	});
 
-	lightbox.init();
+	nextLightbox.init();
+	lightbox = nextLightbox;
 }
 
 const setup = () => {
-	if (!lightbox) {
-		createPhotoSwipe();
-	}
-	window.swup.hooks.on("page:view", () => {
-		createPhotoSwipe();
-	});
+	void createPhotoSwipe();
 
-	window.swup.hooks.on(
-		"content:replace",
-		() => {
-			lightbox?.destroy?.();
-		},
-		{ before: true },
-	);
+	if (hooksRegistered) return;
+	hooksRegistered = true;
+
+	window.swup.hooks.on("page:view", () => {
+		void createPhotoSwipe();
+	});
+	window.swup.hooks.on("content:replace", destroyPhotoSwipe, { before: true });
 };
+
+if (window.swup) {
+	setup();
+} else {
+	document.addEventListener("swup:enable", setup, { once: true });
+}
 
 console.debug(
 	`
@@ -77,9 +117,3 @@ console.debug(
 	"padding:2px 6px;border-radius:3px 0 0 3px;color:#fff;background:#FF6699;font-weight: bold;",
 	"padding:2px 6px;border-radius:0 3px 3px 0;color:#fff;background:#FF9999;font-weight: bold;",
 );
-
-if (window.swup) {
-	setup();
-} else {
-	document.addEventListener("swup:enable", setup);
-}

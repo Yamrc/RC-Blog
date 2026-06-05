@@ -181,23 +181,21 @@ const siteLang = lang.replace("_", "-");
         >
             // Load the theme from local storage
             const theme = localStorage.getItem("theme") || DEFAULT_THEME;
-            switch (theme) {
-                case LIGHT_MODE:
-                    document.documentElement.classList.remove("dark");
-                    break;
-                case DARK_MODE:
-                    document.documentElement.classList.add("dark");
-                    break;
-                case AUTO_MODE:
-                    if (
-                        window.matchMedia("(prefers-color-scheme: dark)")
-                            .matches
-                    ) {
-                        document.documentElement.classList.add("dark");
-                    } else {
-                        document.documentElement.classList.remove("dark");
-                    }
-            }
+            const resolvedTheme =
+                theme === AUTO_MODE
+                    ? window.matchMedia("(prefers-color-scheme: dark)")
+                          .matches
+                        ? DARK_MODE
+                        : LIGHT_MODE
+                    : theme;
+
+            document.documentElement.classList.toggle(
+                "dark",
+                resolvedTheme === DARK_MODE,
+            );
+            document.documentElement.style.colorScheme =
+                resolvedTheme === DARK_MODE ? "dark" : "light";
+            document.documentElement.setAttribute("data-theme", resolvedTheme);
 
             // Load the hue from local storage
             const hue = localStorage.getItem("hue") || configHue;

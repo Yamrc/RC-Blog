@@ -123,6 +123,85 @@
 		@apply bg-(--codeblock-selection);
 	}
 
+	& pre.mermaid[data-processed],
+	& pre.mermaid:has(> svg) {
+		display: block;
+		max-width: 100%;
+		padding: 0;
+		overflow-x: auto;
+		overflow-y: hidden;
+		background: transparent !important;
+		border: 0;
+		border-radius: 0.75rem;
+		box-shadow: none;
+		scrollbar-color: transparent transparent;
+		scrollbar-width: thin;
+	}
+
+	& pre.mermaid[data-processed]:hover,
+	& pre.mermaid[data-processed]:focus-within,
+	& pre.mermaid:has(> svg):hover,
+	& pre.mermaid:has(> svg):focus-within {
+		scrollbar-color: var(--scrollbar-bg) transparent;
+	}
+
+	& pre.mermaid[data-processed]::-webkit-scrollbar,
+	& pre.mermaid:has(> svg)::-webkit-scrollbar {
+		height: 14px;
+		background: transparent;
+	}
+
+	& pre.mermaid[data-processed]::-webkit-scrollbar-button,
+	& pre.mermaid:has(> svg)::-webkit-scrollbar-button {
+		display: none;
+		width: 0;
+		height: 0;
+	}
+
+	& pre.mermaid[data-processed]::-webkit-scrollbar-track,
+	& pre.mermaid[data-processed]::-webkit-scrollbar-track-piece,
+	& pre.mermaid:has(> svg)::-webkit-scrollbar-track,
+	& pre.mermaid:has(> svg)::-webkit-scrollbar-track-piece {
+		background: transparent;
+	}
+
+	& pre.mermaid[data-processed]::-webkit-scrollbar-thumb,
+	& pre.mermaid:has(> svg)::-webkit-scrollbar-thumb {
+		border: 5px solid transparent;
+		border-radius: 999px;
+		background-color: transparent;
+		background-clip: content-box;
+		transition:
+			background-color 180ms ease,
+			border-width 180ms ease;
+	}
+
+	& pre.mermaid[data-processed]:hover::-webkit-scrollbar-thumb,
+	& pre.mermaid[data-processed]:focus-within::-webkit-scrollbar-thumb,
+	& pre.mermaid:has(> svg):hover::-webkit-scrollbar-thumb,
+	& pre.mermaid:has(> svg):focus-within::-webkit-scrollbar-thumb {
+		border-width: 4px;
+		background-color: var(--scrollbar-bg);
+	}
+
+	& pre.mermaid[data-processed]::-webkit-scrollbar-thumb:hover,
+	& pre.mermaid:has(> svg)::-webkit-scrollbar-thumb:hover {
+		border-width: 3px;
+		background-color: var(--scrollbar-bg-hover);
+	}
+
+	& pre.mermaid[data-processed] svg,
+	& pre.mermaid:has(> svg) svg {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		margin-inline: auto;
+		background: transparent !important;
+		border: 0;
+		border-radius: 0.75rem;
+		box-shadow: none;
+	}
+
 	& ul li::marker,
 	& ol li::marker {
 		@apply text-(--primary);

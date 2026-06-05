@@ -25,8 +25,7 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content, headings } = await entry.render();
-const { remarkPluginFrontmatter } = await entry.render();
+const { Content, headings, remarkPluginFrontmatter } = await entry.render();
 
 const getOgImageUrl = async (
 	imageSrc: string | undefined,
@@ -40,9 +39,12 @@ const getOgImageUrl = async (
 	if (imageSrc.startsWith("data:")) return undefined;
 
 	try {
-		const files = import.meta.glob<import("astro").ImageMetadata>("../../**", {
-			import: "default",
-		});
+		const files = import.meta.glob<import("astro").ImageMetadata>(
+			"../../content/**/*.{png,jpg,jpeg,webp,gif,avif,svg}",
+			{
+				import: "default",
+			},
+		);
 		const normalizedPath = path
 			.normalize(
 				path.join("../../", "content/posts/", getDir(entryId), imageSrc),
@@ -63,7 +65,8 @@ const getOgImageUrl = async (
 		return optimized.src.startsWith("http")
 			? optimized.src
 			: new URL(optimized.src, Astro.site || Astro.url).href;
-	} catch {
+	} catch (error) {
+		console.error("Failed to generate Open Graph image:", error);
 		return undefined;
 	}
 };

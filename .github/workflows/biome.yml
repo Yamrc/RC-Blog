@@ -24,4 +24,4 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run Biome
-        run: pnpm exec biome ci ./src --reporter=github
+        run: pnpm exec biome ci . --reporter=github

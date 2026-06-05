@@ -4,14 +4,16 @@ import { i18n } from "@i18n/translation";
 import Icon from "@iconify/svelte";
 import { url } from "@utils/url-utils.ts";
 import { onMount } from "svelte";
-import type { SearchResult } from "@/global";
+import type { PagefindModule, SearchResult } from "@/global";
 
 let keywordDesktop = "";
 let keywordMobile = "";
 let result: SearchResult[] = [];
 let isSearching = false;
-let pagefindLoaded = false;
 let initialized = false;
+
+const pagefindScriptUrl = url("/pagefind/pagefind.js");
+let pagefindLoadPromise: Promise<PagefindModule> | undefined;
 
 const fakeResult: SearchResult[] = [
 	{
@@ -34,6 +36,38 @@ const fakeResult: SearchResult[] = [
 const togglePanel = () => {
 	const panel = document.getElementById("search-panel");
 	panel?.classList.toggle("float-panel-closed");
+	void prepareSearch();
+};
+
+const loadPagefind = async (): Promise<PagefindModule> => {
+	if (window.pagefind) return window.pagefind;
+
+	pagefindLoadPromise ??= (async () => {
+		try {
+			const pagefind: PagefindModule = await import(
+				/* @vite-ignore */ pagefindScriptUrl
+			);
+			await pagefind.options({ excerptLength: 20 });
+			await pagefind.init?.();
+			window.pagefind = pagefind;
+			return pagefind;
+		} catch (error) {
+			pagefindLoadPromise = undefined;
+			throw error;
+		}
+	})();
+
+	return pagefindLoadPromise;
+};
+
+const prepareSearch = async (): Promise<void> => {
+	if (import.meta.env.DEV) return;
+
+	try {
+		await loadPagefind();
+	} catch (error) {
+		console.error("Failed to load Pagefind:", error);
+	}
 };
 
 const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
@@ -61,8 +95,9 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 	try {
 		let searchResults: SearchResult[] = [];
 
-		if (import.meta.env.PROD && pagefindLoaded && window.pagefind) {
-			const response = await window.pagefind.search(keyword);
+		if (import.meta.env.PROD) {
+			const pagefind = await loadPagefind();
+			const response = await pagefind.search(keyword);
 			searchResults = await Promise.all(
 				response.results.map((item) => item.data()),
 			);
@@ -70,13 +105,12 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 			searchResults = fakeResult;
 		} else {
 			searchResults = [];
-			console.error("Pagefind is not available in production environment.");
 		}
 
 		result = searchResults;
 		setPanelVisibility(result.length > 0, isDesktop);
 	} catch (error) {
-		console.error("Search error:", error);
+		console.error("Search failed:", error);
 		result = [];
 		setPanelVisibility(false, isDesktop);
 	} finally {
@@ -85,42 +119,9 @@ const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
 };
 
 onMount(() => {
-	const initializeSearch = () => {
-		initialized = true;
-		pagefindLoaded =
-			typeof window !== "undefined" &&
-			!!window.pagefind &&
-			typeof window.pagefind.search === "function";
-		console.log("Pagefind status on init:", pagefindLoaded);
-		if (keywordDesktop) search(keywordDesktop, true);
-		if (keywordMobile) search(keywordMobile, false);
-	};
-
-	if (import.meta.env.DEV) {
-		console.log(
-			"Pagefind is not available in development mode. Using mock data.",
-		);
-		initializeSearch();
-	} else {
-		document.addEventListener("pagefindready", () => {
-			console.log("Pagefind ready event received.");
-			initializeSearch();
-		});
-		document.addEventListener("pagefindloaderror", () => {
-			console.warn(
-				"Pagefind load error event received. Search functionality will be limited.",
-			);
-			initializeSearch(); // Initialize with pagefindLoaded as false
-		});
-
-		// Fallback in case events are not caught or pagefind is already loaded by the time this script runs
-		setTimeout(() => {
-			if (!initialized) {
-				console.log("Fallback: Initializing search after timeout.");
-				initializeSearch();
-			}
-		}, 2000); // Adjust timeout as needed
-	}
+	initialized = true;
+	if (keywordDesktop) void search(keywordDesktop, true);
+	if (keywordMobile) void search(keywordMobile, false);
 });
 
 $: if (initialized && keywordDesktop) {
@@ -143,7 +144,7 @@ $: if (initialized && keywordMobile) {
 ">
     <Icon icon="material-symbols:search" class="absolute text-[1.25rem] pointer-events-none ml-3 transition my-auto text-black/30 dark:text-white/30" />
     <label for="search-input-desktop" class="sr-only">{i18n(I18nKey.search)}</label>
-	<input id="search-input-desktop" placeholder="{i18n(I18nKey.search)}" type="search" bind:value={keywordDesktop} on:focus={() => search(keywordDesktop, true)}
+	<input id="search-input-desktop" placeholder="{i18n(I18nKey.search)}" type="search" bind:value={keywordDesktop} on:focus={() => { void prepareSearch(); void search(keywordDesktop, true); }} on:input={() => { void prepareSearch(); }}
 	       class="search-input transition-[width] pl-10 text-sm bg-transparent outline-0 h-full w-40 active:w-60 focus:w-60 [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-cancel-button]:hidden"
 	>
 </div>
@@ -176,6 +177,8 @@ $: if (initialized && keywordMobile) {
 				id="search-input-mobile"
 				placeholder="{i18n(I18nKey.search)}"
 				bind:value={keywordMobile}
+				on:focus={() => { void prepareSearch(); }}
+				on:input={() => { void prepareSearch(); }}
 				type="search"
 				class="search-input pl-10 absolute inset-0 text-sm bg-transparent outline-0
 		       focus:w-60"

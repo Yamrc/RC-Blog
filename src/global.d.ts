@@ -1,20 +1,37 @@
 import type { AstroIntegration } from "@swup/astro";
 
+declare module "*.css?raw" {
+	const content: string;
+	export default content;
+}
+
+export interface PagefindSearchResponse {
+	results: Array<{
+		data: () => Promise<SearchResult>;
+	}>;
+}
+
+export interface PagefindOptions {
+	excerptLength?: number;
+	[key: string]: unknown;
+}
+
+export interface PagefindModule {
+	search: (query: string) => Promise<PagefindSearchResponse>;
+	options: (options: PagefindOptions) => Promise<void> | void;
+	init?: () => Promise<void> | void;
+	preload?: (query?: string) => Promise<void> | void;
+}
+
 declare global {
 	interface Window {
 		// type from '@swup/astro' is incorrect
 		swup: AstroIntegration;
-		pagefind: {
-			search: (query: string) => Promise<{
-				results: Array<{
-					data: () => Promise<SearchResult>;
-				}>;
-			}>;
-		};
+		pagefind?: PagefindModule;
 	}
 }
 
-interface SearchResult {
+export interface SearchResult {
 	url: string;
 	meta: {
 		title: string;
