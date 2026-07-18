@@ -14,7 +14,7 @@ import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getSortedPosts } from "@utils/content-utils";
 import { getDir, getPostUrlBySlug } from "@utils/url-utils";
 import { Icon } from "astro-icon/components";
-import { giscusConfig, licenseConfig } from "src/config";
+import { giscusConfig, licenseConfig, umamiConfig } from "src/config";
 
 export async function getStaticPaths() {
 	const blogEntries = await getSortedPosts();
@@ -108,19 +108,19 @@ const ogImageUrl = await getOgImageUrl(entry.data.image, entry.id);
                     <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center">
                         <Icon name="material-symbols:visibility-outline-rounded" />
                     </div>
-                    <div class="text-sm flex items-center gap-1">
+                    {umamiConfig.enable && <div class="text-sm flex items-center gap-1">
                         <ViewCounter client:only="svelte" path={`/posts/${entry.slug}/`} className="font-medium" />
                         {i18n(I18nKey.pageViews)}
-                    </div>
+                    </div>}
                 </div>
                 <div class="flex flex-row items-center gap-2">
                     <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center">
                         <Icon name="material-symbols:person-outline-rounded" />
                     </div>
-                    <div class="text-sm flex items-center gap-1">
+                    {umamiConfig.enable && <div class="text-sm flex items-center gap-1">
                         <ViewCounter client:only="svelte" path={`/posts/${entry.slug}/`} metric="visitors" className="font-medium" />
                         {i18n(I18nKey.visitors)}
-                    </div>
+                    </div>}
                 </div>
             </div>
 
