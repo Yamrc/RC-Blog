@@ -43,7 +43,7 @@
 		"astro-mermaid": "^1.4.0",
 		"astrojs-atom": "^1.0.263",
 		"hastscript": "^9.0.1",
-		"katex": "^0.18.1",
+		"katex": "^0.18.4",
 		"markdown-it": "^14.3.0",
 		"mdast-util-to-string": "^4.0.0",
 		"mermaid": "^11.16.1",
@@ -68,7 +68,7 @@
 	},
 	"devDependencies": {
 		"@astrojs/ts-plugin": "^1.10.10",
-		"@biomejs/biome": "2.5.7",
+		"@biomejs/biome": "2.5.8",
 		"@rollup/plugin-yaml": "^4.1.2",
 		"@tailwindcss/vite": "^4.3.3",
 		"@types/hast": "^3.0.5",
