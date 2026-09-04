@@ -1,52 +1,52 @@
 import {
-	AUTO_MODE,
-	DARK_MODE,
-	DEFAULT_THEME,
-	LIGHT_MODE,
+    AUTO_MODE,
+    DARK_MODE,
+    DEFAULT_THEME,
+    LIGHT_MODE,
 } from "@constants/constants.ts";
 import type { LIGHT_DARK_MODE } from "@/types/config";
 
 export function getDefaultHue(): number {
-	const fallback = "250";
-	const configCarrier = document.getElementById("config-carrier");
-	return Number.parseInt(configCarrier?.dataset.hue || fallback, 10);
+    const fallback = "250";
+    const configCarrier = document.getElementById("config-carrier");
+    return Number.parseInt(configCarrier?.dataset.hue || fallback, 10);
 }
 
 export function getHue(): number {
-	const stored = localStorage.getItem("hue");
-	return stored ? Number.parseInt(stored, 10) : getDefaultHue();
+    const stored = localStorage.getItem("hue");
+    return stored ? Number.parseInt(stored, 10) : getDefaultHue();
 }
 
 export function setHue(hue: number): void {
-	localStorage.setItem("hue", String(hue));
-	const r = document.querySelector(":root") as HTMLElement;
-	if (!r) return;
-	r.style.setProperty("--hue", String(hue));
+    localStorage.setItem("hue", String(hue));
+    const r = document.querySelector(":root") as HTMLElement;
+    if (!r) return;
+    r.style.setProperty("--hue", String(hue));
 }
 
 export function applyThemeToDocument(theme: LIGHT_DARK_MODE): void {
-	const resolvedTheme =
-		theme === AUTO_MODE
-			? window.matchMedia("(prefers-color-scheme: dark)").matches
-				? DARK_MODE
-				: LIGHT_MODE
-			: theme;
+    const resolvedTheme =
+        theme === AUTO_MODE
+            ? window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? DARK_MODE
+                : LIGHT_MODE
+            : theme;
 
-	document.documentElement.classList.toggle(
-		"dark",
-		resolvedTheme === DARK_MODE,
-	);
-	document.documentElement.style.colorScheme =
-		resolvedTheme === DARK_MODE ? "dark" : "light";
+    document.documentElement.classList.toggle(
+        "dark",
+        resolvedTheme === DARK_MODE,
+    );
+    document.documentElement.style.colorScheme =
+        resolvedTheme === DARK_MODE ? "dark" : "light";
 
-	document.documentElement.setAttribute("data-theme", resolvedTheme);
+    document.documentElement.setAttribute("data-theme", resolvedTheme);
 }
 
 export function setTheme(theme: LIGHT_DARK_MODE): void {
-	localStorage.setItem("theme", theme);
-	applyThemeToDocument(theme);
+    localStorage.setItem("theme", theme);
+    applyThemeToDocument(theme);
 }
 
 export function getStoredTheme(): LIGHT_DARK_MODE {
-	return (localStorage.getItem("theme") as LIGHT_DARK_MODE) || DEFAULT_THEME;
+    return (localStorage.getItem("theme") as LIGHT_DARK_MODE) || DEFAULT_THEME;
 }

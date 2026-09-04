@@ -17,38 +17,38 @@ let expired = false;
 let days = 0;
 
 const toDate = (value: DateLike | undefined | null): Date | null => {
-	if (!value) return null;
-	if (value instanceof Date) return value;
-	const d = new Date(value);
-	return Number.isNaN(d.getTime()) ? null : d;
+    if (!value) return null;
+    if (value instanceof Date) return value;
+    const d = new Date(value);
+    return Number.isNaN(d.getTime()) ? null : d;
 };
 
 const compute = () => {
-	if (!expiry) {
-		expired = false;
-		return;
-	}
+    if (!expiry) {
+        expired = false;
+        return;
+    }
 
-	const base = toDate(updated) ?? toDate(published);
-	if (!base) {
-		expired = false;
-		return;
-	}
+    const base = toDate(updated) ?? toDate(published);
+    if (!base) {
+        expired = false;
+        return;
+    }
 
-	const limit =
-		typeof expiryDays === "number" && expiryDays > 0
-			? expiryDays
-			: DEFAULT_DAYS;
+    const limit =
+        typeof expiryDays === "number" && expiryDays > 0
+            ? expiryDays
+            : DEFAULT_DAYS;
 
-	const diffMs = Date.now() - base.getTime();
-	days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-	expired = days >= limit;
+    const diffMs = Date.now() - base.getTime();
+    days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    expired = days >= limit;
 };
 
 onMount(compute);
 
 const formatExpiredSince = (d: number) =>
-	i18n(I18nKey.expiredSince).replace("{days}", String(d));
+    i18n(I18nKey.expiredSince).replace("{days}", String(d));
 </script>
 
 {#if expired}

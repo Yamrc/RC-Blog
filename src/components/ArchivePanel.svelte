@@ -9,14 +9,14 @@ import { onMount } from "svelte";
 type PostData = CollectionEntry<"posts">["data"];
 
 interface Post {
-	slug: string;
-	data: PostData;
+    slug: string;
+    data: PostData;
 }
 
 let {
-	tags = [],
-	categories = [],
-	sortedPosts = [],
+    tags = [],
+    categories = [],
+    sortedPosts = [],
 }: { tags?: string[]; categories?: string[]; sortedPosts?: Post[] } = $props();
 
 let tagState: string[] = $state([]);
@@ -25,65 +25,66 @@ let uncategorizedState: string | null = $state(null);
 let groups: { year: number; posts: Post[] }[] = $state([]);
 
 function formatDate(date: Date) {
-	const month = (date.getMonth() + 1).toString().padStart(2, "0");
-	const day = date.getDate().toString().padStart(2, "0");
-	return `${month}-${day}`;
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${month}-${day}`;
 }
 
 function formatTag(tagList: string[]) {
-	return tagList.map((t) => `#${t}`).join(" ");
+    return tagList.map((t) => `#${t}`).join(" ");
 }
 
 function filterAndGroupPosts() {
-	let filteredPosts: Post[] = sortedPosts;
+    let filteredPosts: Post[] = sortedPosts;
 
-	if (tagState.length > 0) {
-		filteredPosts = filteredPosts.filter(
-			(post) =>
-				Array.isArray(post.data.tags) &&
-				post.data.tags.some((tag: string) => tagState.includes(tag)),
-		);
-	}
+    if (tagState.length > 0) {
+        filteredPosts = filteredPosts.filter(
+            (post) =>
+                Array.isArray(post.data.tags) &&
+                post.data.tags.some((tag: string) => tagState.includes(tag)),
+        );
+    }
 
-	if (categoryState.length > 0) {
-		filteredPosts = filteredPosts.filter(
-			(post) =>
-				post.data.category && categoryState.includes(post.data.category),
-		);
-	}
+    if (categoryState.length > 0) {
+        filteredPosts = filteredPosts.filter(
+            (post) =>
+                post.data.category &&
+                categoryState.includes(post.data.category),
+        );
+    }
 
-	if (uncategorizedState) {
-		filteredPosts = filteredPosts.filter((post) => !post.data.category);
-	}
+    if (uncategorizedState) {
+        filteredPosts = filteredPosts.filter((post) => !post.data.category);
+    }
 
-	const grouped = filteredPosts.reduce(
-		(acc, post) => {
-			const year = post.data.published.getFullYear();
-			if (!acc[year]) {
-				acc[year] = [];
-			}
-			acc[year].push(post);
-			return acc;
-		},
-		{} as Record<number, Post[]>,
-	);
+    const grouped = filteredPosts.reduce(
+        (acc, post) => {
+            const year = post.data.published.getFullYear();
+            if (!acc[year]) {
+                acc[year] = [];
+            }
+            acc[year].push(post);
+            return acc;
+        },
+        {} as Record<number, Post[]>,
+    );
 
-	const groupedPostsArray = Object.keys(grouped).map((yearStr) => ({
-		year: Number.parseInt(yearStr, 10),
-		posts: grouped[Number.parseInt(yearStr, 10)],
-	}));
+    const groupedPostsArray = Object.keys(grouped).map((yearStr) => ({
+        year: Number.parseInt(yearStr, 10),
+        posts: grouped[Number.parseInt(yearStr, 10)],
+    }));
 
-	groupedPostsArray.sort((a, b) => b.year - a.year);
+    groupedPostsArray.sort((a, b) => b.year - a.year);
 
-	groups = groupedPostsArray;
+    groups = groupedPostsArray;
 }
 
 onMount(() => {
-	const params = new URLSearchParams(window.location.search);
-	tagState = params.has("tag") ? params.getAll("tag") : [];
-	categoryState = params.has("category") ? params.getAll("category") : [];
-	uncategorizedState = params.get("uncategorized");
-	filterAndGroupPosts();
+    const params = new URLSearchParams(window.location.search);
+    tagState = params.has("tag") ? params.getAll("tag") : [];
+    categoryState = params.has("category") ? params.getAll("category") : [];
+    uncategorizedState = params.get("uncategorized");
+    filterAndGroupPosts();
 });
 </script>
 

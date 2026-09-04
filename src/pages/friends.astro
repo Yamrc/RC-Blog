@@ -8,19 +8,19 @@ import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { friendLinksConfig } from "@/config";
 
 if (!friendLinksConfig.enable) {
-	return Astro.redirect("/");
+    return Astro.redirect("/");
 }
 
 const friendLinks = await getCollection("friends");
 const links = friendLinks
-	.map((entry) => entry.data)
-	.sort((a, b) => a.name.localeCompare(b.name));
+    .map((entry) => entry.data)
+    .sort((a, b) => a.name.localeCompare(b.name));
 const page = await getEntry("spec", "friends")?.catch(() => undefined);
 const Content = page ? await render(page) : null;
 
 const title = i18n(I18nKey.friendLinks);
 const description =
-	page?.data?.description || i18n(I18nKey.friendLinksSubmitMessage);
+    page?.data?.description || i18n(I18nKey.friendLinksSubmitMessage);
 ---
 
 <MainGridLayout title={title} description={description}>

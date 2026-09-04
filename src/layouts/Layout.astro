@@ -6,11 +6,11 @@ import "@/styles/app.css";
 
 import ConfigCarrier from "@components/site/ConfigCarrier.astro";
 import {
-	AUTO_MODE,
-	DARK_MODE,
-	DEFAULT_THEME,
-	LIGHT_MODE,
-	PAGE_WIDTH,
+    AUTO_MODE,
+    DARK_MODE,
+    DEFAULT_THEME,
+    LIGHT_MODE,
+    PAGE_WIDTH,
 } from "@constants/constants";
 import { formatDateToYYYYMMDD } from "@utils/date-utils";
 import { url } from "@utils/url-utils";
@@ -19,29 +19,29 @@ import type { Favicon } from "@/types/config";
 import "katex/dist/katex.css";
 
 interface Props {
-	title?: string;
-	description?: string;
-	lang?: string;
-	setOGTypeArticle?: boolean;
-	image?: string;
-	canonical?: string;
-	robots?: string;
-	published?: Date;
-	updated?: Date;
-	category?: string | null;
+    title?: string;
+    description?: string;
+    lang?: string;
+    setOGTypeArticle?: boolean;
+    image?: string;
+    canonical?: string;
+    robots?: string;
+    published?: Date;
+    updated?: Date;
+    category?: string | null;
 }
 
 let {
-	title,
-	description,
-	lang,
-	setOGTypeArticle,
-	image,
-	canonical,
-	robots,
-	published,
-	updated,
-	category,
+    title,
+    description,
+    lang,
+    setOGTypeArticle,
+    image,
+    canonical,
+    robots,
+    published,
+    updated,
+    category,
 } = Astro.props;
 
 // defines global css variables
@@ -50,16 +50,16 @@ const configHue = siteConfig.themeColor.hue;
 
 let pageTitle: string;
 if (title) {
-	pageTitle = `${title} - ${siteConfig.title}`;
+    pageTitle = `${title} - ${siteConfig.title}`;
 } else {
-	pageTitle = `${siteConfig.title} - ${siteConfig.subtitle}`;
+    pageTitle = `${siteConfig.title} - ${siteConfig.subtitle}`;
 }
 
 const favicons: Favicon[] = siteConfig.favicon || [];
 
 // const siteLang = siteConfig.lang.replace('_', '-')
 if (!lang) {
-	lang = `${siteConfig.lang}`;
+    lang = `${siteConfig.lang}`;
 }
 const siteLang = lang.replace("_", "-");
 ---

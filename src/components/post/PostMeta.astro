@@ -6,23 +6,23 @@ import { getCategoryUrl, getTagUrl } from "@utils/url-utils";
 import { Icon } from "astro-icon/components";
 
 interface Props {
-	class: string;
-	published: Date;
-	updated?: Date;
-	tags: string[];
-	category: string | null;
-	pinned?: boolean;
-	hideTagsForMobile?: boolean;
-	hideUpdateDate?: boolean;
+    class: string;
+    published: Date;
+    updated?: Date;
+    tags: string[];
+    category: string | null;
+    pinned?: boolean;
+    hideTagsForMobile?: boolean;
+    hideUpdateDate?: boolean;
 }
 const {
-	published,
-	updated,
-	tags,
-	category,
-	pinned = false,
-	hideTagsForMobile = false,
-	hideUpdateDate = false,
+    published,
+    updated,
+    tags,
+    category,
+    pinned = false,
+    hideTagsForMobile = false,
+    hideUpdateDate = false,
 } = Astro.props;
 const className = Astro.props.class;
 ---

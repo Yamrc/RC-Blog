@@ -16,124 +16,124 @@ const pagefindScriptUrl = url("/pagefind/pagefind.js");
 let pagefindLoadPromise: Promise<PagefindModule> | undefined;
 
 const fakeResult: SearchResult[] = [
-	{
-		url: url("/"),
-		meta: {
-			title: "This Is a Fake Search Result",
-		},
-		excerpt:
-			"Because the search cannot work in the <mark>dev</mark> environment.",
-	},
-	{
-		url: url("/"),
-		meta: {
-			title: "If You Want to Test the Search",
-		},
-		excerpt: "Try running <mark>npm build && npm preview</mark> instead.",
-	},
+    {
+        url: url("/"),
+        meta: {
+            title: "This Is a Fake Search Result",
+        },
+        excerpt:
+            "Because the search cannot work in the <mark>dev</mark> environment.",
+    },
+    {
+        url: url("/"),
+        meta: {
+            title: "If You Want to Test the Search",
+        },
+        excerpt: "Try running <mark>npm build && npm preview</mark> instead.",
+    },
 ];
 
 const togglePanel = () => {
-	const panel = document.getElementById("search-panel");
-	panel?.classList.toggle("float-panel-closed");
-	void prepareSearch();
+    const panel = document.getElementById("search-panel");
+    panel?.classList.toggle("float-panel-closed");
+    void prepareSearch();
 };
 
 const loadPagefind = async (): Promise<PagefindModule> => {
-	if (window.pagefind) return window.pagefind;
+    if (window.pagefind) return window.pagefind;
 
-	pagefindLoadPromise ??= (async () => {
-		try {
-			const pagefind: PagefindModule = await import(
-				/* @vite-ignore */ pagefindScriptUrl
-			);
-			await pagefind.options({ excerptLength: 20 });
-			await pagefind.init?.();
-			window.pagefind = pagefind;
-			return pagefind;
-		} catch (error) {
-			pagefindLoadPromise = undefined;
-			throw error;
-		}
-	})();
+    pagefindLoadPromise ??= (async () => {
+        try {
+            const pagefind: PagefindModule = await import(
+                /* @vite-ignore */ pagefindScriptUrl
+            );
+            await pagefind.options({ excerptLength: 20 });
+            await pagefind.init?.();
+            window.pagefind = pagefind;
+            return pagefind;
+        } catch (error) {
+            pagefindLoadPromise = undefined;
+            throw error;
+        }
+    })();
 
-	return pagefindLoadPromise;
+    return pagefindLoadPromise;
 };
 
 const prepareSearch = async (): Promise<void> => {
-	if (import.meta.env.DEV) return;
+    if (import.meta.env.DEV) return;
 
-	try {
-		await loadPagefind();
-	} catch (error) {
-		console.error("Failed to load Pagefind:", error);
-	}
+    try {
+        await loadPagefind();
+    } catch (error) {
+        console.error("Failed to load Pagefind:", error);
+    }
 };
 
 const setPanelVisibility = (show: boolean, isDesktop: boolean): void => {
-	const panel = document.getElementById("search-panel");
-	if (!panel || !isDesktop) return;
+    const panel = document.getElementById("search-panel");
+    if (!panel || !isDesktop) return;
 
-	if (show) {
-		panel.classList.remove("float-panel-closed");
-	} else {
-		panel.classList.add("float-panel-closed");
-	}
+    if (show) {
+        panel.classList.remove("float-panel-closed");
+    } else {
+        panel.classList.add("float-panel-closed");
+    }
 };
 
 const search = async (keyword: string, isDesktop: boolean): Promise<void> => {
-	if (!keyword) {
-		setPanelVisibility(false, isDesktop);
-		result = [];
-		return;
-	}
+    if (!keyword) {
+        setPanelVisibility(false, isDesktop);
+        result = [];
+        return;
+    }
 
-	if (!initialized) return;
+    if (!initialized) return;
 
-	isSearching = true;
+    isSearching = true;
 
-	try {
-		let searchResults: SearchResult[] = [];
+    try {
+        let searchResults: SearchResult[] = [];
 
-		if (import.meta.env.PROD) {
-			const pagefind = await loadPagefind();
-			const response = await pagefind.search(keyword);
-			searchResults = await Promise.all(
-				response.results.map((item) => item.data()),
-			);
-		} else if (import.meta.env.DEV) {
-			searchResults = fakeResult;
-		} else {
-			searchResults = [];
-		}
+        if (import.meta.env.PROD) {
+            const pagefind = await loadPagefind();
+            const response = await pagefind.search(keyword);
+            searchResults = await Promise.all(
+                response.results.map((item) => item.data()),
+            );
+        } else if (import.meta.env.DEV) {
+            searchResults = fakeResult;
+        } else {
+            searchResults = [];
+        }
 
-		result = searchResults;
-		setPanelVisibility(result.length > 0, isDesktop);
-	} catch (error) {
-		console.error("Search failed:", error);
-		result = [];
-		setPanelVisibility(false, isDesktop);
-	} finally {
-		isSearching = false;
-	}
+        result = searchResults;
+        setPanelVisibility(result.length > 0, isDesktop);
+    } catch (error) {
+        console.error("Search failed:", error);
+        result = [];
+        setPanelVisibility(false, isDesktop);
+    } finally {
+        isSearching = false;
+    }
 };
 
 onMount(() => {
-	initialized = true;
-	if (keywordDesktop) void search(keywordDesktop, true);
-	if (keywordMobile) void search(keywordMobile, false);
+    initialized = true;
+    if (keywordDesktop) void search(keywordDesktop, true);
+    if (keywordMobile) void search(keywordMobile, false);
 });
 
 $: if (initialized && keywordDesktop) {
-	(async () => {
-		await search(keywordDesktop, true);
-	})();
+    (async () => {
+        await search(keywordDesktop, true);
+    })();
 }
 
 $: if (initialized && keywordMobile) {
-	(async () => {
-		await search(keywordMobile, false);
-	})();
+    (async () => {
+        await search(keywordMobile, false);
+    })();
 }
 </script>
 

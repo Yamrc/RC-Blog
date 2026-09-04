@@ -9,31 +9,31 @@ import { siteConfig } from "@/config";
 import Layout from "./Layout.astro";
 
 interface Props {
-	title?: string;
-	description?: string;
-	lang?: string;
-	setOGTypeArticle?: boolean;
-	headings?: MarkdownHeading[];
-	image?: string;
-	canonical?: string;
-	robots?: string;
-	published?: Date;
-	updated?: Date;
-	category?: string | null;
+    title?: string;
+    description?: string;
+    lang?: string;
+    setOGTypeArticle?: boolean;
+    headings?: MarkdownHeading[];
+    image?: string;
+    canonical?: string;
+    robots?: string;
+    published?: Date;
+    updated?: Date;
+    category?: string | null;
 }
 
 const {
-	title,
-	description,
-	lang,
-	setOGTypeArticle,
-	headings = [],
-	image,
-	canonical,
-	robots,
-	published,
-	updated,
-	category,
+    title,
+    description,
+    lang,
+    setOGTypeArticle,
+    headings = [],
+    image,
+    canonical,
+    robots,
+    published,
+    updated,
+    category,
 } = Astro.props;
 
 const mainPanelTop = "5.5rem";

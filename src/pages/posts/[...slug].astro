@@ -17,58 +17,63 @@ import { Icon } from "astro-icon/components";
 import { giscusConfig, licenseConfig, umamiConfig } from "src/config";
 
 export async function getStaticPaths() {
-	const blogEntries = await getSortedPosts();
-	return blogEntries.map((entry) => ({
-		params: { slug: entry.slug },
-		props: { entry },
-	}));
+    const blogEntries = await getSortedPosts();
+    return blogEntries.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
 }
 
 const { entry } = Astro.props;
 const { Content, headings, remarkPluginFrontmatter } = await entry.render();
 
 const getOgImageUrl = async (
-	imageSrc: string | undefined,
-	entryId: string,
+    imageSrc: string | undefined,
+    entryId: string,
 ): Promise<string | undefined> => {
-	if (!imageSrc) return undefined;
+    if (!imageSrc) return undefined;
 
-	if (imageSrc.startsWith("http")) return imageSrc;
-	if (imageSrc.startsWith("/"))
-		return new URL(imageSrc, Astro.site || Astro.url).href;
-	if (imageSrc.startsWith("data:")) return undefined;
+    if (imageSrc.startsWith("http")) return imageSrc;
+    if (imageSrc.startsWith("/"))
+        return new URL(imageSrc, Astro.site || Astro.url).href;
+    if (imageSrc.startsWith("data:")) return undefined;
 
-	try {
-		const files = import.meta.glob<import("astro").ImageMetadata>(
-			"../../content/**/*.{png,jpg,jpeg,webp,gif,avif,svg}",
-			{
-				import: "default",
-			},
-		);
-		const normalizedPath = path
-			.normalize(
-				path.join("../../", "content/posts/", getDir(entryId), imageSrc),
-			)
-			.replace(/\\/g, "/");
-		const file = files[normalizedPath];
-		if (!file) return undefined;
+    try {
+        const files = import.meta.glob<import("astro").ImageMetadata>(
+            "../../content/**/*.{png,jpg,jpeg,webp,gif,avif,svg}",
+            {
+                import: "default",
+            },
+        );
+        const normalizedPath = path
+            .normalize(
+                path.join(
+                    "../../",
+                    "content/posts/",
+                    getDir(entryId),
+                    imageSrc,
+                ),
+            )
+            .replace(/\\/g, "/");
+        const file = files[normalizedPath];
+        if (!file) return undefined;
 
-		const img = await file();
-		if (!img) return undefined;
+        const img = await file();
+        if (!img) return undefined;
 
-		const optimized = await getImage({
-			src: img,
-			width: 1200,
-			height: 630,
-			format: "webp",
-		});
-		return optimized.src.startsWith("http")
-			? optimized.src
-			: new URL(optimized.src, Astro.site || Astro.url).href;
-	} catch (error) {
-		console.error("Failed to generate Open Graph image:", error);
-		return undefined;
-	}
+        const optimized = await getImage({
+            src: img,
+            width: 1200,
+            height: 630,
+            format: "webp",
+        });
+        return optimized.src.startsWith("http")
+            ? optimized.src
+            : new URL(optimized.src, Astro.site || Astro.url).href;
+    } catch (error) {
+        console.error("Failed to generate Open Graph image:", error);
+        return undefined;
+    }
 };
 
 const ogImageUrl = await getOgImageUrl(entry.data.image, entry.id);
