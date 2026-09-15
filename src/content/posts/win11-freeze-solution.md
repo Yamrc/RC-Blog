@@ -6,6 +6,7 @@ description: 'Win11 24H2更新后Chrome、Edge、VSCode等Chromium应用频繁�
 image: '../_assets/images/win11-freeze-solution/cover_pixiv_123773799.webp'
 tags: [Windows11,Bug,Chromium,MPO]
 category: '杂谈'
+expiryDays: 120
 draft: false
 ---
 cover: `pixiv@Z-wumi:123773799`
